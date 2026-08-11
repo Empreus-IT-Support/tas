@@ -31,9 +31,15 @@ const SERVICES = [
 ];
 
 const CREDENTIALS = [
-  { value: "Registered", label: "Tax agent & public accountant" },
-  { value: "Electronic", label: "Lodgement for faster refunds" },
-  { value: "Australia-wide", label: "Out-of-area lodgement service" },
+  { value: "Public", label: "Accountant and registered tax agent" },
+  { value: "Electronic", label: "Lodgement, for faster refunds" },
+  { value: "Quality-checked", label: "Before anything is lodged" },
+];
+
+const FACTS = [
+  { value: "Mount Isa", label: "North West Queensland" },
+  { value: "Australia-wide", label: "Out-of-area lodgement" },
+  { value: "Jul – Sep", label: "Extended office hours" },
 ];
 
 const STEPS = [
@@ -102,34 +108,55 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Crest panel */}
+            {/* Credentials panel */}
             <div className="lg:col-span-5">
               <div className="notch relative mx-auto max-w-sm border border-white/10 bg-white/[0.04] p-9 backdrop-blur-sm">
                 <div
                   aria-hidden="true"
                   className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-gold to-red"
                 />
-                <Image
-                  src="/images/logo.png"
-                  alt=""
-                  width={712}
-                  height={192}
-                  aria-hidden="true"
-                  className="h-16 w-auto"
-                />
-                <dl className="mt-8 space-y-6">
+                <div className="flex items-center gap-5">
+                  <Image
+                    src="/images/tax-practitioners-board.png"
+                    alt="Registered with the Tax Practitioners Board"
+                    width={120}
+                    height={140}
+                    className="h-20 w-auto"
+                  />
+                  <p className="font-display text-lg leading-snug text-white">
+                    Registered with the Tax&nbsp;Practitioners Board
+                  </p>
+                </div>
+
+                <div className="ledger-rule my-7 border-white/15" />
+
+                <dl className="space-y-5">
                   {CREDENTIALS.map((c) => (
-                    <div key={c.label}>
-                      <dt className="font-display text-xl text-gold">
+                    <div key={c.label} className="flex items-baseline gap-4">
+                      <dt className="font-display text-base whitespace-nowrap text-gold">
                         {c.value}
                       </dt>
-                      <dd className="mt-1 text-sm text-white/60">{c.label}</dd>
+                      <dd className="text-sm text-white/55">{c.label}</dd>
                     </div>
                   ))}
                 </dl>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Facts rail */}
+        <div className="relative border-t border-white/10">
+          <ul className="mx-auto grid max-w-6xl divide-y divide-white/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {FACTS.map((f) => (
+              <li key={f.label} className="py-6 sm:px-8 sm:first:pl-0 sm:last:pr-0">
+                <p className="font-display text-2xl text-gold">{f.value}</p>
+                <p className="mt-1.5 font-ui text-[10px] font-bold tracking-[0.22em] text-white/45 uppercase">
+                  {f.label}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div
@@ -187,12 +214,17 @@ export default function HomePage() {
               <li key={s.n}>
                 <Link
                   href={s.href}
-                  className="group grid gap-5 border-b border-line py-9 md:grid-cols-12 md:items-center md:gap-8"
+                  className="group relative grid gap-5 border-b border-line py-9 md:grid-cols-12 md:items-center md:gap-8"
                 >
+                  {/* gold rule sweeps in along the bottom on hover */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                  />
                   <span className="font-display text-3xl text-line transition-colors group-hover:text-gold md:col-span-1">
                     {s.n}
                   </span>
-                  <h3 className="transition-colors group-hover:text-red md:col-span-4">
+                  <h3 className="transition-transform duration-300 group-hover:text-red md:col-span-4 md:group-hover:translate-x-1">
                     {s.title}
                   </h3>
                   <p className="text-[15px] md:col-span-5">{s.detail}</p>

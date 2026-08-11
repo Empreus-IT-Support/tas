@@ -37,11 +37,20 @@ export const BUSINESS = {
     "Extended office hours July to September. Please call for an appointment at other times — bookings essential.",
 } as const;
 
+/**
+ * `label` is the full page name — used in the footer, breadcrumbs and
+ * sitemap. `short` is what the top nav renders: the full names are too long
+ * to sit on one line in a horizontal bar and wrap into a ragged menu.
+ */
 export const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/about-us", label: "About Us" },
-  { href: "/taxation-and-accounting", label: "Taxation & Accounting" },
-  { href: "/tax-resources", label: "Tax Resources" },
-  { href: "/keep-informed", label: "Keep Informed" },
-  { href: "/contact-us", label: "Contact Us" },
+  { href: "/", label: "Home", short: "Home" },
+  { href: "/about-us", label: "About Us", short: "About" },
+  {
+    href: "/taxation-and-accounting",
+    label: "Taxation & Accounting",
+    short: "Services",
+  },
+  { href: "/tax-resources", label: "Tax Resources", short: "Resources" },
+  { href: "/keep-informed", label: "Keep Informed", short: "Updates" },
+  { href: "/contact-us", label: "Contact Us", short: "Contact" },
 ] as const;

@@ -86,7 +86,14 @@ export default function Footer() {
           <ul className="mt-6 space-y-3 text-[15px]">
             {NAV.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="hover:text-white">
+                <Link
+                  href={item.href}
+                  className="inline-flex items-center gap-2 hover:text-white"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-px w-3 bg-gold/50 transition-all"
+                  />
                   {item.label}
                 </Link>
               </li>

@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* Palette lifted from the archived TASC brand: black shield, red outline,
+   gold lion. See ../tascentre-archive/assets/.../623_scaled-1920w.png */
+@theme {
+  --color-brand-red: #d81b17;
+  --color-brand-red-dark: #b01310;
+  --color-brand-gold: #ffd82d;
+  --color-ink: #202020;
+  --color-ink-soft: #272a2f;
+  --color-body: #4a4a4a;
+  --color-mist: #f4f5f6;
+  --color-fog: #e2e4e6;
+  --font-heading: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  --font-body: var(--font-open-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fff;
+  color: var(--color-body);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+::selection {
+  background-color: var(--color-brand-red);
+  color: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-ink);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Gold rule under section headings, echoing the lion in the crest */
+.rule::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  margin-top: 0.875rem;
+  background: var(--color-brand-gold);
+}
+
+.rule-center::after {
+  margin-inline: auto;
+}
+
+/* Nav link with animated underline */
+.nav-link {
+  position: relative;
+  transition: color 0.2s;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--color-brand-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+/* Base interaction transitions, site-wide */
+a,
+button,
+input,
+textarea,
+select {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* Visible focus for keyboard users on dark and light surfaces alike */
+:focus-visible {
+  outline: 3px solid var(--color-brand-gold);
+  outline-offset: 2px;
+}
+
+/* Prose defaults for long-form page copy */
+.prose-tasc p {
+  margin-bottom: 1.125rem;
+}
+
+.prose-tasc p:last-child {
+  margin-bottom: 0;
+}
+
+/* Scroll-reveal (classes applied by components/ScrollReveal.tsx) */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-init {
+    opacity: 0;
+    transform: translateY(26px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: none;
+  }
+}

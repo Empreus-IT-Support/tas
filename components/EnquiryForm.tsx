@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ArrowRight } from "./icons";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -49,14 +50,15 @@ export default function EnquiryForm({
   }
 
   const field =
-    "w-full rounded border border-fog bg-white px-4 py-3 text-ink outline-none focus:border-brand-red";
-  const label = "mb-1.5 block font-heading text-sm font-semibold text-ink";
+    "w-full border border-line bg-white px-4 py-3.5 text-ink outline-none placeholder:text-muted focus:border-red";
+  const label =
+    "mb-2 block font-ui text-[11px] font-bold tracking-[0.18em] text-muted uppercase";
 
   if (status === "sent") {
     return (
       <p
         role="status"
-        className="rounded border border-brand-gold bg-brand-gold/10 p-6 text-ink"
+        className="notch border border-gold bg-gold/10 p-7 text-ink"
       >
         Thank you for contacting Tax, Accounting and Super Centre. We will be in
         touch soon.
@@ -141,7 +143,10 @@ export default function EnquiryForm({
       )}
 
       {status === "error" && (
-        <p role="alert" className="text-sm font-semibold text-brand-red">
+        <p
+          role="alert"
+          className="border-l-2 border-red bg-red/5 px-4 py-3 text-sm font-semibold text-red"
+        >
           {error}
         </p>
       )}
@@ -149,9 +154,10 @@ export default function EnquiryForm({
       <button
         type="submit"
         disabled={status === "sending"}
-        className="rounded bg-brand-red px-8 py-3 font-heading text-sm font-bold tracking-wide text-white uppercase hover:bg-brand-red-dark disabled:opacity-60"
+        className="btn btn-primary disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : submitLabel}
+        {status !== "sending" && <ArrowRight />}
       </button>
     </form>
   );

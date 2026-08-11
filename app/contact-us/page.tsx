@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import EnquiryForm from "@/components/EnquiryForm";
 import PageBanner from "@/components/PageBanner";
 import { BUSINESS } from "@/lib/site";
+import { ArrowRight, Clock, Mail, Phone, Pin } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -15,79 +16,97 @@ export default function ContactPage() {
   return (
     <>
       <PageBanner
-        title="Contact Us"
-        intro="For prompt attention to your taxation and accounting, please contact us using the enquiry form or the details below."
-        image="/images/banner-1.jpg"
+        eyebrow="Contact Us"
+        title="Let's get your return moving"
+        intro="For prompt attention to your taxation and accounting, use the enquiry form or the details below."
       />
 
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:py-20 lg:grid-cols-[1.1fr_1fr]">
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Send us a message
-          </h2>
-          <div className="mt-7">
+      <div className="mx-auto grid max-w-6xl gap-14 px-5 py-20 sm:py-24 lg:grid-cols-12">
+        {/* ------------------------------------------------------------ Form */}
+        <section className="lg:col-span-7">
+          <p className="eyebrow">Send us a message</p>
+          <h2 className="mt-5">We&rsquo;ll be in touch</h2>
+          <div className="ledger-rule mt-8 max-w-[9rem]" />
+          <div className="mt-10">
             <EnquiryForm />
           </div>
         </section>
 
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Contact Info
-          </h2>
+        {/* ------------------------------------------------------------ Info */}
+        <aside className="lg:col-span-5">
+          <div className="notch relative overflow-hidden bg-ink p-9 text-white/70">
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-gold to-red"
+            />
+            <p className="eyebrow eyebrow-light">Mount Isa QLD</p>
 
-          <div className="mt-7 rounded border border-fog bg-mist p-8">
-            <h3 className="font-heading text-base tracking-wide uppercase">
-              Mount Isa QLD
-            </h3>
-            <address className="mt-4 not-italic leading-relaxed">
-              {address.line1}
-              <br />
-              {address.line2}
-              <br />
-              {address.suburb} {address.state} {address.postcode}
-              <br />
-              <br />
-              <a
-                href={`tel:${BUSINESS.phoneHref}`}
-                className="font-heading font-bold text-brand-red hover:text-brand-red-dark"
-              >
-                {BUSINESS.phone}
-              </a>
-              <br />
-              <a
-                href={`mailto:${BUSINESS.email}`}
-                className="underline decoration-fog underline-offset-4 hover:text-brand-red"
-              >
-                {BUSINESS.email}
-              </a>
-            </address>
-            <p className="mt-6">
+            <address className="mt-7 space-y-5 text-[15px] not-italic">
               <a
                 href={BUSINESS.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-heading text-sm font-bold tracking-wide text-brand-red uppercase hover:text-brand-red-dark"
+                className="flex gap-3.5 hover:text-white"
               >
-                View on map →
+                <Pin className="mt-1 shrink-0 text-gold" />
+                <span>
+                  {address.line1}
+                  <br />
+                  {address.line2}
+                  <br />
+                  {address.suburb} {address.state} {address.postcode}
+                </span>
+              </a>
+              <a
+                href={`tel:${BUSINESS.phoneHref}`}
+                className="flex items-center gap-3.5 font-display text-xl text-white hover:text-gold"
+              >
+                <Phone className="shrink-0 text-gold" />
+                {BUSINESS.phone}
+              </a>
+              <a
+                href={`mailto:${BUSINESS.email}`}
+                className="flex items-center gap-3.5 hover:text-white"
+              >
+                <Mail className="shrink-0 text-gold" />
+                {BUSINESS.email}
+              </a>
+            </address>
+
+            <p className="mt-8">
+              <a
+                href={BUSINESS.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-arrow text-gold"
+              >
+                View on map
+                <ArrowRight />
               </a>
             </p>
           </div>
 
-          <div className="mt-8 rounded border border-fog p-8">
-            <h3 className="font-heading text-base tracking-wide uppercase">
-              Opening Hours
-            </h3>
-            <dl className="mt-4 space-y-2">
+          <div className="mt-8 border border-line p-9">
+            <p className="flex items-center gap-3 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+              <Clock className="text-gold-deep" />
+              Opening hours
+            </p>
+            <dl className="mt-6">
               {BUSINESS.hours.map((h) => (
-                <div key={h.days} className="flex justify-between gap-4">
+                <div
+                  key={h.days}
+                  className="flex justify-between gap-4 border-b border-line py-3 text-[15px]"
+                >
                   <dt>{h.days}</dt>
-                  <dd className="text-right font-semibold text-ink">{h.time}</dd>
+                  <dd className="text-right font-semibold text-ink">
+                    {h.time}
+                  </dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-5 text-sm">{BUSINESS.hoursNote}</p>
+            <p className="mt-6 text-sm text-muted">{BUSINESS.hoursNote}</p>
           </div>
-        </section>
+        </aside>
       </div>
     </>
   );

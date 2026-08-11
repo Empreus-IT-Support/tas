@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
+import { ArrowRight } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,74 +13,102 @@ export default function AboutPage() {
   return (
     <>
       <PageBanner
-        title="About Us"
-        intro="We enjoy and respect what we do, and we keep it fun, friendly and real."
-        image="/images/banner-3.jpg"
+        eyebrow="About Us"
+        title="We enjoy and respect what we do — and we keep it fun, friendly and real"
       />
 
-      <section className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
-        <div className="prose-tasc">
-          <p>
-            Tax, Accounting and Super Centre began in Mount Isa as Steve Williams
-            and Co., which then became known as Tax, Accounting and Super Centre.
-            This shortens to TASC, a play on the word &lsquo;task&rsquo;. We
-            enjoy and respect what we do and keep it fun, friendly and real.
-          </p>
-          <p>
-            Our success has come from our local knowledge, identifying and
-            understanding the individual needs of our clients and providing them
-            with prompt service. We have always worked outside the spectrum of
-            the typical accounting practice by recognising and prioritising our
-            clients&rsquo; needs. At TASC we do not see our clients as numbers —
-            we see people with a dream and a vision to be financially secure, and
-            our focus is to help our clients achieve their dreams.
-          </p>
+      {/* ------------------------------------------------------------- Story */}
+      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+        <div className="grid gap-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <p className="eyebrow">Our story</p>
+            <h2 className="mt-5">From Steve Williams and Co. to TASC</h2>
+            <div className="ledger-rule mt-8 max-w-[9rem]" />
+          </div>
+          <div className="prose-tasc text-[17px] lg:col-span-7">
+            <p>
+              Tax, Accounting and Super Centre began in Mount Isa as Steve
+              Williams and Co., which then became known as Tax, Accounting and
+              Super Centre. This shortens to TASC, a play on the word
+              &lsquo;task&rsquo;. We enjoy and respect what we do and keep it
+              fun, friendly and real.
+            </p>
+            <p>
+              Our success has come from our local knowledge, identifying and
+              understanding the individual needs of our clients and providing
+              them with prompt service. We have always worked outside the
+              spectrum of the typical accounting practice by recognising and
+              prioritising our clients&rsquo; needs.
+            </p>
+            <p>
+              At TASC we do not see our clients as numbers — we see people with a
+              dream and a vision to be financially secure, and our focus is to
+              help our clients achieve their dreams.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="bg-mist py-16 sm:py-20">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2">
-          <article className="rounded border border-fog bg-white p-8">
-            <h2 className="rule font-heading text-xl tracking-wide uppercase">
-              Our Mission
-            </h2>
-            <p className="mt-7">
-              Our mission is to build a successful company by providing a quality
-              affordable service available to everyday people. We will never
-              compromise our ethics in the pursuit of profit and, as such, expect
-              to build a company founded on the best moral conduct for the
-              benefit of not only the clients but also the community in which we
-              operate.
+      {/* ---------------------------------------------------- Mission/Vision */}
+      <section className="texture relative isolate overflow-hidden bg-ink py-20 sm:py-28">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(255,216,45,0.11),transparent_65%)]"
+        />
+        <div className="relative mx-auto grid max-w-6xl gap-px overflow-hidden border border-white/10 bg-white/10 px-0 md:mx-auto md:grid-cols-2">
+          <article className="bg-ink p-10 sm:p-12">
+            <p className="eyebrow eyebrow-light">Our Mission</p>
+            <p className="mt-7 text-[17px] leading-relaxed text-white/75">
+              Our mission is to build a successful company by providing a
+              quality affordable service available to everyday people. We will
+              never compromise our ethics in the pursuit of profit and, as such,
+              expect to build a company founded on the best moral conduct for
+              the benefit of not only the clients but also the community in
+              which we operate.
             </p>
           </article>
-
-          <article className="rounded border border-fog bg-white p-8">
-            <h2 className="rule font-heading text-xl tracking-wide uppercase">
-              Our Vision
-            </h2>
-            <p className="mt-7">
+          <article className="bg-ink p-10 sm:p-12">
+            <p className="eyebrow eyebrow-light">Our Vision</p>
+            <p className="mt-7 text-[17px] leading-relaxed text-white/75">
               Tax, Accounting and Super Centre is a reputable, forward-thinking,
               successful firm. We offer a full suite of taxation and accounting
               services. If you are looking for friendly, professional advice for
-              your individual or business needs, contact our office to speak with
-              qualified professionals in their respective fields.
+              your individual or business needs, contact our office to speak
+              with qualified professionals in their respective fields.
             </p>
           </article>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
-        <h2 className="rule rule-center text-center font-heading text-xl tracking-wide uppercase">
-          Our Management
-        </h2>
-        <div className="mt-12 flex justify-center">
-          <article className="w-full max-w-sm rounded border border-fog p-8 text-center">
-            <h3 className="font-heading text-lg">Iain Jeffery</h3>
-            <p className="mt-1 text-sm text-body">MFP, BSc, Adv Dip FS</p>
-            <p className="mt-3 font-heading text-xs font-bold tracking-[0.2em] text-brand-red uppercase">
+      {/* -------------------------------------------------------- Management */}
+      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+        <div className="text-center">
+          <p className="eyebrow eyebrow-center">Our Management</p>
+          <h2 className="mt-5">Who you&rsquo;ll be dealing with</h2>
+        </div>
+
+        <div className="mt-14 flex justify-center">
+          <article className="notch relative w-full max-w-md border border-line bg-paper p-10 text-center">
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-gold to-red"
+            />
+            <span className="mx-auto flex h-16 w-16 items-center justify-center bg-ink font-display text-2xl text-gold">
+              IJ
+            </span>
+            <h3 className="mt-7 text-2xl">Iain Jeffery</h3>
+            <p className="mt-2 text-sm text-muted">MFP, BSc, Adv Dip FS</p>
+            <p className="mt-5 font-ui text-[11px] font-bold tracking-[0.24em] text-red uppercase">
               Director
             </p>
           </article>
+        </div>
+
+        <div className="mt-16 text-center">
+          <Link href="/contact-us" className="link-arrow">
+            Talk to our team
+            <ArrowRight />
+          </Link>
         </div>
       </section>
     </>

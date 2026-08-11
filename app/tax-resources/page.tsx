@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageBanner from "@/components/PageBanner";
+import { Download, ExternalLink } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Tax Resources",
@@ -55,9 +56,9 @@ const CHECKLISTS = [
 ];
 
 const FORMS = [
-  { label: "TASC engagement letter (non business) & Tax Agent Authority", href: "/documents/tasc-engagement-letter-tax-agent-authority.pdf", type: "PDF" },
+  { label: "Engagement letter (non business) & Tax Agent Authority", href: "/documents/tasc-engagement-letter-tax-agent-authority.pdf", type: "PDF" },
   { label: "TASC Client Rights", href: "/documents/tasc-clients-rights.pdf", type: "PDF" },
-  { label: "TASC tax return questionnaire (non-complicated tax affairs)", href: "/documents/tasc-tax-return-questionnaire.pdf", type: "PDF" },
+  { label: "Tax return questionnaire (non-complicated tax affairs)", href: "/documents/tasc-tax-return-questionnaire.pdf", type: "PDF" },
 ];
 
 const USEFUL = [
@@ -69,25 +70,27 @@ const USEFUL = [
   { label: "Sage HandiSoft", href: "https://www.sage.com/en-au/" },
 ];
 
-function ExternalList({
-  items,
-}: {
-  items: { label: string; href: string }[];
-}) {
+const SECTIONS = [
+  { id: "fact-sheets", label: "Fact Sheets" },
+  { id: "calculators", label: "Calculators" },
+  { id: "checklists", label: "Checklists" },
+  { id: "forms", label: "Forms & Questionnaires" },
+  { id: "useful-links", label: "Useful Links" },
+];
+
+function LinkList({ items }: { items: { label: string; href: string }[] }) {
   return (
-    <ul className="mt-5 space-y-2">
+    <ul className="mt-6 grid gap-x-10 sm:grid-cols-2">
       {items.map((i) => (
-        <li key={i.label} className="flex gap-2.5">
-          <span aria-hidden="true" className="text-brand-red">
-            ▸
-          </span>
+        <li key={i.label} className="border-b border-line">
           <a
             href={i.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline decoration-fog underline-offset-4 hover:text-brand-red hover:decoration-brand-red"
+            className="group flex items-center justify-between gap-4 py-3.5 text-[15px] hover:text-red"
           >
-            {i.label}
+            <span>{i.label}</span>
+            <ExternalLink className="shrink-0 text-line group-hover:text-red" />
           </a>
         </li>
       ))}
@@ -95,27 +98,55 @@ function ExternalList({
   );
 }
 
-function DownloadList({
+function PlainList({ items }: { items: string[] }) {
+  return (
+    <ul className="mt-2 grid gap-x-10 sm:grid-cols-2">
+      {items.map((i) => (
+        <li key={i} className="border-b border-line py-3.5 text-[15px]">
+          {i}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function DownloadGrid({
   items,
 }: {
   items: { label: string; href: string; type: string }[];
 }) {
   return (
-    <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+    <ul className="mt-6 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2">
       {items.map((i) => (
         <li key={i.label}>
           <a
             href={i.href}
-            className="flex h-full items-start gap-3 rounded border border-fog bg-white p-5 hover:border-brand-red hover:shadow"
+            className="group flex h-full items-start gap-4 bg-white p-6 hover:bg-paper"
           >
-            <span className="mt-0.5 rounded bg-brand-red px-2 py-1 font-heading text-[10px] font-bold tracking-wide text-white">
+            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-ink font-ui text-[10px] font-bold text-gold">
               {i.type}
             </span>
-            <span className="flex-1">{i.label}</span>
+            <span className="flex-1">
+              <span className="block font-display text-[16px] leading-snug text-ink group-hover:text-red">
+                {i.label}
+              </span>
+              <span className="mt-2 flex items-center gap-1.5 font-ui text-[10px] font-bold tracking-[0.16em] text-muted uppercase">
+                <Download className="h-3.5 w-3.5" />
+                Download
+              </span>
+            </span>
           </a>
         </li>
       ))}
     </ul>
+  );
+}
+
+function Heading({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <h2 id={`${id}-heading`} className="text-3xl">
+      {children}
+    </h2>
   );
 }
 
@@ -123,73 +154,104 @@ export default function ResourcesPage() {
   return (
     <>
       <PageBanner
-        title="Taxation & Accounting Support in Mount Isa"
+        eyebrow="Tax Resources"
+        title="Taxation & accounting support in Mount Isa"
         intro="Fact sheets, calculators, checklists and the forms you need before we start your return."
-        image="/images/banner-4.jpg"
       />
 
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Fact Sheets
-          </h2>
-          <h3 className="mt-8 font-heading text-base">Deductions you can claim</h3>
-          <ExternalList items={DEDUCTIONS} />
-          <ul className="mt-2 space-y-2">
-            {DEDUCTIONS_PLAIN.map((d) => (
-              <li key={d} className="flex gap-2.5">
-                <span aria-hidden="true" className="text-brand-red">
-                  ▸
-                </span>
-                <span>{d}</span>
-              </li>
-            ))}
-          </ul>
+      <div className="mx-auto max-w-6xl gap-16 px-5 py-20 sm:py-24 lg:grid lg:grid-cols-12">
+        <aside className="mb-14 lg:col-span-3 lg:mb-0">
+          <nav aria-label="On this page" className="lg:sticky lg:top-36">
+            <p className="font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+              On this page
+            </p>
+            <ul className="mt-5 space-y-1 border-l border-line">
+              {SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-gold hover:text-ink"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-          <h3 className="mt-10 font-heading text-base">
-            Records you need to keep
-          </h3>
-          <ExternalList items={RECORDS} />
+        <div className="lg:col-span-9">
+          <section
+            id="fact-sheets"
+            aria-labelledby="fact-sheets-heading"
+            className="scroll-mt-40"
+          >
+            <p className="eyebrow">From the ATO</p>
+            <div className="mt-5">
+              <Heading id="fact-sheets">Fact Sheets</Heading>
+            </div>
 
-          <h3 className="mt-10 font-heading text-base">Offsets you can claim</h3>
-          <ExternalList items={OFFSETS} />
-        </section>
+            <h3 className="mt-10 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+              Deductions you can claim
+            </h3>
+            <LinkList items={DEDUCTIONS} />
+            <PlainList items={DEDUCTIONS_PLAIN} />
 
-        <hr className="my-14 border-fog" />
+            <h3 className="mt-12 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+              Records you need to keep
+            </h3>
+            <LinkList items={RECORDS} />
 
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Calculators
-          </h2>
-          <ExternalList items={CALCULATORS} />
-        </section>
+            <h3 className="mt-12 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+              Offsets you can claim
+            </h3>
+            <LinkList items={OFFSETS} />
+          </section>
 
-        <hr className="my-14 border-fog" />
+          <div className="ledger-rule my-16" />
 
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Checklists
-          </h2>
-          <DownloadList items={CHECKLISTS} />
-        </section>
+          <section
+            id="calculators"
+            aria-labelledby="calculators-heading"
+            className="scroll-mt-40"
+          >
+            <Heading id="calculators">Calculators</Heading>
+            <LinkList items={CALCULATORS} />
+          </section>
 
-        <hr className="my-14 border-fog" />
+          <div className="ledger-rule my-16" />
 
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Forms &amp; Questionnaires
-          </h2>
-          <DownloadList items={FORMS} />
-        </section>
+          <section
+            id="checklists"
+            aria-labelledby="checklists-heading"
+            className="scroll-mt-40"
+          >
+            <Heading id="checklists">Checklists</Heading>
+            <DownloadGrid items={CHECKLISTS} />
+          </section>
 
-        <hr className="my-14 border-fog" />
+          <div className="ledger-rule my-16" />
 
-        <section>
-          <h2 className="rule font-heading text-xl tracking-wide uppercase">
-            Useful Links
-          </h2>
-          <ExternalList items={USEFUL} />
-        </section>
+          <section
+            id="forms"
+            aria-labelledby="forms-heading"
+            className="scroll-mt-40"
+          >
+            <Heading id="forms">Forms &amp; Questionnaires</Heading>
+            <DownloadGrid items={FORMS} />
+          </section>
+
+          <div className="ledger-rule my-16" />
+
+          <section
+            id="useful-links"
+            aria-labelledby="useful-links-heading"
+            className="scroll-mt-40"
+          >
+            <Heading id="useful-links">Useful Links</Heading>
+            <LinkList items={USEFUL} />
+          </section>
+        </div>
       </div>
     </>
   );

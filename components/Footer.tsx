@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BUSINESS, NAV, SITE_NAME } from "@/lib/site";
+import { Mail, Phone, Pin } from "./icons";
 
 const LEGAL = [
   { href: "/documents/tasc-disclaimer.pdf", label: "Disclaimer" },
@@ -12,45 +13,77 @@ export default function Footer() {
   const { address } = BUSINESS;
 
   return (
-    <footer className="bg-ink text-white/70">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-3">
-        <div>
-          <h2 className="font-heading text-xs font-bold tracking-[0.2em] text-brand-gold uppercase">
-            Mount Isa QLD
+    <footer className="texture relative isolate overflow-hidden bg-ink text-white/60">
+      <div
+        aria-hidden="true"
+        className="h-1 bg-gradient-to-r from-red via-gold to-red"
+      />
+
+      <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-12 sm:py-20">
+        <div className="md:col-span-5">
+          <Image
+            src="/images/logo.png"
+            alt={SITE_NAME}
+            width={712}
+            height={192}
+            className="h-14 w-auto"
+          />
+          <p className="mt-6 max-w-sm text-[15px] leading-relaxed">
+            TASC services the North West Queensland region from our office in
+            Mount Isa, with an out-of-area lodgement service that anyone in
+            Australia can take advantage of.
+          </p>
+          <Image
+            src="/images/tax-practitioners-board.png"
+            alt="Registered with the Tax Practitioners Board"
+            width={120}
+            height={140}
+            className="mt-8 h-24 w-auto"
+          />
+        </div>
+
+        <div className="md:col-span-4">
+          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-gold uppercase">
+            Mount Isa Office
           </h2>
-          <address className="mt-4 text-sm not-italic leading-relaxed">
+          <address className="mt-6 space-y-4 text-[15px] not-italic">
             <a
               href={BUSINESS.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white"
+              className="flex gap-3 hover:text-white"
             >
-              {address.line1}
-              <br />
-              {address.line2}
-              <br />
-              {address.suburb} {address.state} {address.postcode}
+              <Pin className="mt-1 shrink-0 text-gold" />
+              <span>
+                {address.line1}
+                <br />
+                {address.line2}
+                <br />
+                {address.suburb} {address.state} {address.postcode}
+              </span>
             </a>
-            <br />
-            <br />
             <a
               href={`tel:${BUSINESS.phoneHref}`}
-              className="font-semibold text-white hover:text-brand-gold"
+              className="flex items-center gap-3 font-semibold text-white hover:text-gold"
             >
+              <Phone className="shrink-0 text-gold" />
               {BUSINESS.phone}
             </a>
-            <br />
-            <a href={`mailto:${BUSINESS.email}`} className="hover:text-white">
+            <a
+              href={`mailto:${BUSINESS.email}`}
+              className="flex items-center gap-3 hover:text-white"
+            >
+              <Mail className="shrink-0 text-gold" />
               {BUSINESS.email}
             </a>
           </address>
         </div>
 
-        <div>
-          <h2 className="font-heading text-xs font-bold tracking-[0.2em] text-brand-gold uppercase">
+        <div className="md:col-span-3">
+          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-gold uppercase">
             Explore
           </h2>
-          <ul className="mt-4 space-y-2 text-sm">
+          <ul className="mt-6 space-y-3 text-[15px]">
             {NAV.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="hover:text-white">
@@ -60,45 +93,30 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-
-        <div>
-          <h2 className="font-heading text-xs font-bold tracking-[0.2em] text-brand-gold uppercase">
-            About TASC
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed">
-            {SITE_NAME} (TASC) services the North West Queensland region from our
-            office in Mount Isa, with an out-of-area lodgement service that anyone
-            can take advantage of.
-          </p>
-          <Image
-            src="/images/tax-practitioners-board.png"
-            alt="Registered with the Tax Practitioners Board"
-            width={120}
-            height={140}
-            className="mt-6 h-24 w-auto"
-          />
-        </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-8 text-xs leading-relaxed">
-          <p className="font-heading font-bold tracking-wide text-white uppercase">
-            {BUSINESS.legalName.toUpperCase()} T/A {SITE_NAME.toUpperCase()}
+      <div className="relative border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-5 py-8 text-[13px] leading-relaxed">
+          <p className="font-ui text-[11px] font-bold tracking-[0.16em] text-white/80 uppercase">
+            {BUSINESS.legalName} t/a {SITE_NAME}
           </p>
-          <p className="mt-2">ABN: {BUSINESS.abn}</p>
+          <p className="mt-2">ABN {BUSINESS.abn}</p>
           <p>{BUSINESS.authorisedRep}</p>
-          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-            {LEGAL.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} className="hover:text-white">
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6">
-            &copy; {new Date().getFullYear()} {SITE_NAME}
-          </p>
+
+          <div className="mt-7 flex flex-col justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
+            <ul className="flex flex-wrap gap-x-7 gap-y-2">
+              {LEGAL.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className="hover:text-white">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p className="text-white/40">
+              &copy; {new Date().getFullYear()} {SITE_NAME}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

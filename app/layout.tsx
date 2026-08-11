@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
-import { Montserrat, Open_Sans } from "next/font/google";
+import { Arvo, Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
+// Arvo, Montserrat and Open Sans were all loaded by the original TASC site —
+// Arvo's slab serif carries the heraldic weight of the crest.
+const arvo = Arvo({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-arvo",
+});
+
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["600", "700"],
   variable: "--font-montserrat",
 });
 
@@ -109,7 +117,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={`${montserrat.variable} ${openSans.variable}`}
+      className={`${arvo.variable} ${montserrat.variable} ${openSans.variable}`}
     >
       <body className="antialiased">
         <script
@@ -118,7 +126,7 @@ export default function RootLayout({
         />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-[60] focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-ink"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-60 focus:m-2 focus:bg-white focus:px-4 focus:py-2 focus:text-ink"
         >
           Skip to content
         </a>

@@ -59,10 +59,12 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 - [ ] **Link-check the ATO URLs in `app/tax-resources/page.tsx`.** They are
       carried over verbatim from the old site; the ATO has restructured since,
       so some will redirect and some may 404.
-- [ ] **Replace the banner photography.** `public/images/banner-*.jpg` are the
-      old site's stock placeholders — `banner-1.jpg` shows a US IRS Form 1040,
-      which is wrong for an Australian practice. Real photos of the Mount Isa
-      office would be better on every count.
+- [ ] **Commission real photography.** The design is deliberately photo-free —
+      the five inherited stock banners in `public/images/` are dated and
+      blue-tinted, and `banner-2.jpg` is a US IRS Form 1040 sitting on an
+      Australian tax practice. They are kept only as archive material. Photos
+      of the Mount Isa office, the team and the shopfront would lift the hero
+      and the About page considerably.
 - [ ] **Re-check the client documents.** The PDFs and spreadsheets in
       `public/documents/` date to 2018–2020 and cite superseded thresholds.
       Get current versions from the client.
@@ -71,12 +73,26 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 - [ ] Add a real favicon — `app/icon.svg` is a placeholder built from the brand
       colours, not the TASC crest.
 
-## Brand
+## Design
 
-Palette and logo come from the archived crest (black shield, red outline, gold
-lion): `--color-brand-red #d81b17`, `--color-brand-gold #ffd82d`,
-`--color-ink #202020`. Headings are Montserrat, body Open Sans — both were on
-the original site.
+The identity is built out from the crest recovered in the archive — a black
+shield, red outline and gold lion rampant — rather than from stock imagery.
+
+- **Palette** — `--color-ink #0e1012`, `--color-red #d81b17`,
+  `--color-gold #ffd82d`, `--color-paper #fbfaf8`. On light backgrounds gold
+  drops to `--color-gold-deep #b8860b` so small text stays legible; bright gold
+  is reserved for dark surfaces.
+- **Type** — Arvo (slab serif) for display, Montserrat for small uppercase UI
+  labels, Open Sans for body. All three were already in the original site's
+  font stack; Arvo's slab weight is what ties the headings to the crest.
+- **Recurring motifs**, defined as utilities in `app/globals.css`: `.eyebrow`
+  (small caps with a gold tick), `.ledger-rule` (the double hairline of a ruled
+  accounts book), `.notch` (clips a panel's top corners like the shield),
+  `.texture` (the archived halftone pattern at 7% overlay).
+- **Dark mastheads** on every inner page — type, a gold radial wash, the
+  halftone texture and the crest as a watermark, closed with a red/gold rule.
+- Services are numbered editorial rows, not a grid of identical cards; the two
+  long pages carry a sticky in-page nav; the header condenses on scroll.
 
 The old site's every page carried unedited Duda placeholder carousels
 ("Slide title / Write your caption here / Button"). That was live on the real

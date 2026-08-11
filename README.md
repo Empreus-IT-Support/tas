@@ -20,8 +20,8 @@ npm run dev     # http://localhost:3000
 npm run build
 ```
 
-Dev-server entries are registered in `../../alrta/.claude/launch.json` as
-`tascentre` (port 3000) and `tascentre-alt` (port 3013, for when 3000 is busy).
+A dev-server entry is registered in `../alrta/.claude/launch.json` as
+`tascentre` on port 3000.
 
 ## Routes
 

@@ -9,37 +9,40 @@ export const metadata: Metadata = {
   alternates: { canonical: "/tax-resources" },
 };
 
-// NOTE: ATO deep links are carried over from the archived site. The ATO has
-// restructured its site since; run a link check before go-live.
-const DEDUCTIONS = [
-  { label: "Vehicle expenses", href: "https://www.ato.gov.au/individuals/income-and-deductions/deductions-you-can-claim/transport-and-travel-expenses/car-expenses/" },
-  { label: "Transport and travel expenses", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Deductions-you-can-claim/Transport-and-travel-expenses/" },
-  { label: "Union fees and subscriptions to associations", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Deductions-you-can-claim/Other-work-related-deductions/Union-fees,-subscriptions-to-associations-and-bargaining-agents-fees/" },
-  { label: "Income protection insurance", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Deductions-you-can-claim/Other-deductions/Income-protection-insurance/" },
-];
+// ATO links re-pointed 2026-08-12 against the current site. The URLs
+// inherited from the archived site were built on an information architecture
+// the ATO has since replaced (/Individuals/... -> /individuals-and-families/
+// income-deductions-offsets-and-records/...) and 7 of them 404'd. Every link
+// below was checked end-to-end; re-run the check periodically.
+const ATO = "https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records";
+const DEDUCT = `${ATO}/deductions-you-can-claim`;
 
-const DEDUCTIONS_PLAIN = [
-  "Personal superannuation contributions",
-  "Gifts and donations",
-  "Home office expenses",
-  "Self-education expenses",
-  "Tools, equipment and other assets",
-  "Seminars, conferences and education workshops",
+const DEDUCTIONS = [
+  { label: "Motor vehicle and car expenses", href: `${DEDUCT}/work-related-deductions/cars-transport-and-travel/motor-vehicle-and-car-expenses` },
+  { label: "Cars, transport and travel", href: `${DEDUCT}/work-related-deductions/cars-transport-and-travel` },
+  { label: "Working from home expenses", href: `${DEDUCT}/work-related-deductions/working-from-home-expenses` },
+  { label: "Education, training and seminars", href: `${DEDUCT}/work-related-deductions/education-training-and-seminars` },
+  { label: "Tools, computers and items you use for work", href: `${DEDUCT}/work-related-deductions/tools-computers-and-items-you-use-for-work` },
+  { label: "Memberships, accreditations and union fees", href: `${DEDUCT}/memberships-accreditations-fees-and-commissions` },
+  { label: "Income protection insurance", href: `${DEDUCT}/investments-insurance-and-super/income-protection-insurance` },
+  { label: "Personal super contributions", href: `${DEDUCT}/investments-insurance-and-super/personal-super-contributions` },
+  { label: "Gifts and donations", href: `${DEDUCT}/gifts-and-donations` },
+  { label: "Cost of managing tax affairs", href: `${DEDUCT}/cost-of-managing-tax-affairs` },
 ];
 
 const RECORDS = [
-  { label: "What records to keep", href: "https://www.ato.gov.au/individuals/income-and-deductions/records-you-need-to-keep/" },
+  { label: "What records to keep", href: `${ATO}/records-you-need-to-keep` },
   { label: "Lost or destroyed records", href: "https://www.ato.gov.au/Forms/Reasonable-estimate-for-documents-destroyed-by-disaster/" },
-  { label: "How long you need to keep your records", href: "https://www.ato.gov.au/Business/Record-keeping-for-business/Index---Record-keeping-for-business/" },
+  { label: "Record keeping for business", href: "https://www.ato.gov.au/Business/Record-keeping-for-business/Index---Record-keeping-for-business" },
 ];
 
 const OFFSETS = [
-  { label: "Health insurance", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Private-health-insurance-rebate-and-offset/" },
-  { label: "Medical expenses", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Medical-expenses-tax-offset/" },
-  { label: "Seniors and pensioners tax offset", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Seniors-and-pensioners-tax-offset/" },
-  { label: "Superannuation", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Super-related-tax-offsets/" },
-  { label: "Low income earners", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Low-and-middle-income-earner-tax-offsets/" },
-  { label: "Zones and overseas forces", href: "https://www.ato.gov.au/Individuals/Income-and-deductions/Offsets-and-rebates/Zone-and-overseas-forces-tax-offsets/" },
+  { label: "Private health insurance offset", href: `${ATO}/tax-offsets/private-health-insurance-offset` },
+  { label: "Medical expenses tax offset", href: `${ATO}/tax-offsets/medical-expenses-tax-offset` },
+  { label: "Seniors and pensioners tax offset", href: `${ATO}/tax-offsets/seniors-and-pensioners-tax-offset` },
+  { label: "Superannuation-related tax offsets", href: `${ATO}/tax-offsets/superannuation-related-tax-offsets` },
+  { label: "Low income tax offset", href: `${ATO}/tax-offsets/low-income-tax-offset` },
+  { label: "Zone or overseas forces tax offsets", href: `${ATO}/tax-offsets/zone-or-overseas-forces-tax-offsets` },
 ];
 
 const CALCULATORS = [
@@ -93,18 +96,6 @@ function LinkList({ items }: { items: { label: string; href: string }[] }) {
             <span>{i.label}</span>
             <ExternalLink className="shrink-0 text-line group-hover:text-red" />
           </a>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function PlainList({ items }: { items: string[] }) {
-  return (
-    <ul className="mt-2 grid gap-x-10 sm:grid-cols-2">
-      {items.map((i) => (
-        <li key={i} className="border-b border-line py-3.5 text-[15px]">
-          {i}
         </li>
       ))}
     </ul>
@@ -197,7 +188,6 @@ export default function ResourcesPage() {
               Deductions you can claim
             </h3>
             <LinkList items={DEDUCTIONS} />
-            <PlainList items={DEDUCTIONS_PLAIN} />
 
             <h3 className="mt-12 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
               Records you need to keep

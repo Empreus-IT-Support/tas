@@ -56,9 +56,9 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
       address, phone, email, hours, ABN, and especially the authorised
       representative line. The archive shows this changed from InterPrac
       (AFSL 246638) to Mawson Wealth (AFSL 552819) — confirm which is current.
-- [ ] **Link-check the ATO URLs in `app/tax-resources/page.tsx`.** They are
-      carried over verbatim from the old site; the ATO has restructured since,
-      so some will redirect and some may 404.
+- [x] ~~Link-check the ATO URLs.~~ Done 2026-08-12: the ATO had replaced its
+      whole IA and 7 links 404'd. All re-pointed at the current site and
+      verified 200 end-to-end. Worth re-running periodically.
 - [ ] **Commission real photography.** The design is deliberately photo-free —
       the five inherited stock banners in `public/images/` are dated and
       blue-tinted, and `banner-2.jpg` is a US IRS Form 1040 sitting on an
@@ -71,8 +71,13 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 - [ ] Set `RESEND_API_KEY` in the deployment environment and verify the sending
       domain in Resend.
 - [ ] Add a real favicon — `app/icon.svg` is a placeholder built from the brand
-- [ ] **Confirm the map coordinates** in the JSON-LD in `app/layout.tsx`. They are Mount Isa town centre, not a surveyed position for the shopfront.
       colours, not the TASC crest.
+- [ ] **Confirm the map coordinates** in the JSON-LD in `app/layout.tsx`. They
+      are Mount Isa town centre, not a surveyed position for the shopfront.
+- [ ] **Point the domain at Vercel.** `tascentre.com.au` currently resolves to
+      a registrar parking page at 103.42.108.46 and its HTTPS is broken at the
+      TLS handshake. Until the DNS is changed, `robots.ts` deliberately keeps
+      the `*.vercel.app` deploy out of search results.
 
 ## SEO
 

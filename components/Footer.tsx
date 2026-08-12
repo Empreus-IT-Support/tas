@@ -19,7 +19,7 @@ export default function Footer() {
         className="h-1 bg-gradient-to-r from-red via-lion to-red"
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-12 sm:py-20">
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 md:grid-cols-12 sm:py-20">
         <div className="md:col-span-5">
           <Image
             src="/images/logo.png"
@@ -103,7 +103,7 @@ export default function Footer() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-8 text-[13px] leading-relaxed">
+        <div className="mx-auto max-w-7xl px-5 py-8 text-[13px] leading-relaxed">
           <p className="font-ui text-[11px] font-bold tracking-[0.16em] text-white/80 uppercase">
             {BUSINESS.legalName} t/a {SITE_NAME}
           </p>

@@ -23,7 +23,7 @@ export default function ContactPage() {
         intro="For prompt attention to your taxation and accounting, use the enquiry form or the details below."
       />
 
-      <div className="mx-auto grid max-w-6xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
+      <div className="mx-auto grid max-w-7xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
         {/* ------------------------------------------------------------ Form */}
         <section className="lg:col-span-7">
           <p className="eyebrow">Send us a message</p>

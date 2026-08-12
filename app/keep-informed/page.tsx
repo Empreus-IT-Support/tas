@@ -34,7 +34,7 @@ export default function KeepInformedPage() {
         intro="Enter your details to receive regular information updates from Tax, Accounting and Super Centre."
       />
 
-      <div className="mx-auto grid max-w-6xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
+      <div className="mx-auto grid max-w-7xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
         <section className="lg:col-span-7">
           <p className="eyebrow">What you&rsquo;ll receive</p>
           <h2 className="mt-5">Worth opening</h2>

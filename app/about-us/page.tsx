@@ -21,7 +21,7 @@ export default function AboutPage() {
       />
 
       {/* ------------------------------------------------------------- Story */}
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:py-20">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow">Our story</p>
@@ -58,7 +58,7 @@ export default function AboutPage() {
           aria-hidden="true"
           className="pointer-events-none absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.11),transparent_65%)]"
         />
-        <div className="relative mx-auto grid max-w-6xl gap-px overflow-hidden border border-white/10 bg-white/10 px-0 md:mx-auto md:grid-cols-2">
+        <div className="relative mx-auto grid max-w-7xl gap-px overflow-hidden border border-white/10 bg-white/10 px-0 md:mx-auto md:grid-cols-2">
           <article className="bg-ink p-10 sm:p-12">
             <p className="eyebrow eyebrow-light">Our Mission</p>
             <p className="mt-7 text-[17px] leading-relaxed text-white/75">
@@ -84,7 +84,7 @@ export default function AboutPage() {
       </section>
 
       {/* -------------------------------------------------------- Management */}
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:py-20">
         <div className="text-center">
           <p className="eyebrow eyebrow-center">Our Management</p>
           <h2 className="mt-5">Who you&rsquo;ll be dealing with</h2>

@@ -109,7 +109,7 @@ export default function TaxationPage() {
         intro="Our aim is to lift the tax and accounting burden for you. We'll take care of your tax, accounting and financial concerns so you can enjoy a better work-life balance."
       />
 
-      <div className="mx-auto max-w-6xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
+      <div className="mx-auto max-w-7xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
         {/* In-page nav */}
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">

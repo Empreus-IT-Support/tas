@@ -161,7 +161,7 @@ export default function ResourcesPage() {
         intro="Fact sheets, calculators, checklists and the forms you need before we start your return."
       />
 
-      <div className="mx-auto max-w-6xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
+      <div className="mx-auto max-w-7xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">
             <p className="font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">

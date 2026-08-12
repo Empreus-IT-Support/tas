@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BUSINESS } from "@/lib/site";
 import { ArrowRight, Phone } from "@/components/icons";
+import CrestMark from "@/components/CrestMark";
 
 const SERVICES = [
   {
@@ -42,6 +43,25 @@ const FACTS = [
   { value: "Jul – Sep", label: "Extended office hours" },
 ];
 
+const REASONS = [
+  {
+    title: "Local, not remote",
+    body: "We have worked in Mount Isa long enough to know the industries, the employers and the deductions that actually apply here.",
+  },
+  {
+    title: "Open to anyone",
+    body: "The out-of-area lodgement service means distance is not a barrier — send your paperwork in from anywhere in Australia.",
+  },
+  {
+    title: "Checked before lodged",
+    body: "A strict quality check runs before anything goes to the ATO, reducing the risk of audits and processing delays.",
+  },
+  {
+    title: "Plain answers",
+    body: "Direct access to qualified staff who will explain the position in language you can act on, not jargon.",
+  },
+];
+
 const STEPS = [
   {
     n: "1",
@@ -74,7 +94,7 @@ export default function HomePage() {
           className="pointer-events-none absolute -bottom-64 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(224,1,1,0.22),transparent_65%)]"
         />
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-12 sm:pt-20 sm:pb-16">
+        <div className="relative mx-auto max-w-7xl px-5 pt-14 pb-12 sm:pt-20 sm:pb-16">
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-7">
               <p className="eyebrow eyebrow-light">
@@ -107,7 +127,7 @@ export default function HomePage() {
 
             {/* Credentials panel */}
             <div className="lg:col-span-5">
-              <div className="notch relative mx-auto max-w-sm border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
+              <div className="notch relative border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm">
                 <div
                   aria-hidden="true"
                   className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-lion to-red"
@@ -144,7 +164,7 @@ export default function HomePage() {
 
         {/* Facts rail */}
         <div className="relative border-t border-white/10">
-          <ul className="mx-auto grid max-w-6xl divide-y divide-white/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <ul className="mx-auto grid max-w-7xl divide-y divide-white/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {FACTS.map((f) => (
               <li key={f.label} className="py-4 sm:px-8 sm:first:pl-0 sm:last:pr-0">
                 <p className="font-display text-xl text-lion">{f.value}</p>
@@ -163,7 +183,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------------------- Intro */}
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:py-20">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow">Who we are</p>
@@ -171,6 +191,19 @@ export default function HomePage() {
               A friendly, professional local practice
             </h2>
             <div className="ledger-rule mt-8 max-w-[9rem]" />
+
+            {/* Pull quote — from the practice's own About copy. Gives the
+                column weight instead of leaving it empty beside the text. */}
+            <figure className="mt-10 border-l-2 border-red pl-7">
+              <blockquote className="font-display text-xl leading-snug text-ink">
+                &ldquo;At TASC we do not see our clients as numbers — we see
+                people with a dream and a vision to be financially
+                secure.&rdquo;
+              </blockquote>
+              <figcaption className="mt-4 font-ui text-[10px] font-bold tracking-[0.24em] text-muted uppercase">
+                Tax, Accounting and Super Centre
+              </figcaption>
+            </figure>
           </div>
           <div className="prose-tasc text-[17px] lg:col-span-7">
             <p>
@@ -200,7 +233,7 @@ export default function HomePage() {
 
       {/* ---------------------------------------------------------- Services */}
       <section className="border-y border-line bg-paper py-14 sm:py-20">
-        <div className="mx-auto max-w-6xl px-5">
+        <div className="mx-auto max-w-7xl px-5">
           <div className="max-w-2xl">
             <p className="eyebrow">What we do</p>
             <h2 className="mt-5">How we can help</h2>
@@ -211,17 +244,21 @@ export default function HomePage() {
               <li key={s.n}>
                 <Link
                   href={s.href}
-                  className="group relative grid gap-5 border-b border-line py-9 md:grid-cols-12 md:items-center md:gap-8"
+                  className="group relative grid gap-5 border-b border-line py-10 md:grid-cols-12 md:items-center md:gap-8"
                 >
-                  {/* gold rule sweeps in along the bottom on hover */}
+                  {/* paper sweeps in from the left, with a lion rule beneath */}
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-lion transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                    className="absolute inset-y-0 -inset-x-6 -z-10 origin-left scale-x-0 bg-white transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
                   />
-                  <span className="font-display text-3xl text-line transition-colors group-hover:text-lion md:col-span-1">
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-[-1px] h-0.5 origin-left scale-x-0 bg-lion transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                  />
+                  <span className="font-display text-4xl leading-none text-line transition-colors duration-300 group-hover:text-lion md:col-span-1">
                     {s.n}
                   </span>
-                  <h3 className="transition-transform duration-300 group-hover:text-red md:col-span-4 md:group-hover:translate-x-1">
+                  <h3 className="text-[1.375rem] transition-transform duration-300 group-hover:text-red md:col-span-4 md:group-hover:translate-x-1">
                     {s.title}
                   </h3>
                   <p className="text-[15px] md:col-span-5">{s.detail}</p>
@@ -237,7 +274,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------- Remote lodgement */}
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
+      <section className="mx-auto max-w-7xl px-5 py-14 sm:py-20">
         <div className="max-w-2xl">
           <p className="eyebrow">Out of area?</p>
           <h2 className="mt-5">Remote lodgement, in three steps</h2>
@@ -271,13 +308,43 @@ export default function HomePage() {
         </p>
       </section>
 
-      {/* --------------------------------------------------------------- CTA */}
-      <section className="texture relative isolate overflow-hidden bg-ink">
+      {/* ------------------------------------------------------- Why TASC */}
+      <section className="texture relative isolate overflow-hidden bg-ink py-14 sm:py-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-32 right-1/4 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.13),transparent_65%)]"
+          className="pointer-events-none absolute -top-56 -left-40 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.12),transparent_65%)]"
         />
-        <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-5 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
+        <CrestMark className="-right-16 -bottom-24 h-[34rem]" opacity={0.05} />
+
+        <div className="relative mx-auto max-w-7xl px-5">
+          <div className="max-w-2xl">
+            <p className="eyebrow eyebrow-light">Why TASC</p>
+            <h2 className="mt-5 text-white">
+              Local knowledge, without the local limits
+            </h2>
+          </div>
+
+          <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+            {REASONS.map((r, i) => (
+              <li key={r.title} className="border-t border-white/15 pt-6">
+                <span className="font-ui text-[10px] font-bold tracking-[0.24em] text-lion">
+                  0{i + 1}
+                </span>
+                <h3 className="mt-4 text-white">{r.title}</h3>
+                <p className="mt-3 text-[15px] text-silver/65">{r.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* --------------------------------------------------------------- CTA */}
+      <section className="relative isolate overflow-hidden bg-ink-2">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-32 right-1/4 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(224,1,1,0.18),transparent_65%)]"
+        />
+        <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-8 px-5 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="eyebrow eyebrow-light">Bookings essential</p>
             <h2 className="mt-5 text-white">Ready to lodge?</h2>

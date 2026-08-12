@@ -48,7 +48,7 @@ export default function Header() {
           scrolled ? "h-0" : "h-9"
         }`}
       >
-        <div className="mx-auto flex h-9 max-w-6xl items-center justify-between gap-6 px-5">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-6 px-5">
           <p className="font-ui text-[10px] font-bold tracking-[0.26em] text-lion uppercase">
             Registered Tax Agent &amp; Public Accountant
           </p>
@@ -80,7 +80,7 @@ export default function Header() {
           scrolled ? "shadow-[0_10px_30px_-18px_rgba(0,0,0,0.9)]" : ""
         }`}
       >
-        <div className="mx-auto flex h-[74px] max-w-6xl items-center gap-6 px-5">
+        <div className="mx-auto flex h-[74px] max-w-7xl items-center gap-6 px-5">
           <Link
             href="/"
             aria-label={`${SITE_NAME} home`}

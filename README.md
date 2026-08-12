@@ -78,19 +78,24 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 The identity is built out from the crest recovered in the archive — a black
 shield, red outline and gold lion rampant — rather than from stock imagery.
 
-- **Palette** — `--color-ink #0e1012`, `--color-red #d81b17`,
-  `--color-gold #ffd82d`, `--color-paper #fbfaf8`. On light backgrounds gold
-  drops to `--color-gold-deep #b8860b` so small text stays legible; bright gold
-  is reserved for dark surfaces.
+- **Palette — sampled from `public/images/logo.png`, not chosen.** Counting
+  opaque pixels on a canvas gives shield `#030202` (9,701px), wordmark
+  `#d9dedf` (6,681px), outline `#e00101` (2,875px), lion `#b8c72c` (1,739px).
+  Note the lion is **yellow-green, not gold**, and the silver wordmark is the
+  mark's second-largest colour — together they make the scheme read cool
+  rather than warm. `--color-lion-deep #67711a` is the same hue darkened for
+  light backgrounds, where `#b8c72c` manages only 1.87:1 against white.
+  Measured ratios: lion on ink 11.09:1, lion-deep on white 5.31:1, red on
+  white 5.03:1, silver on ink 15.26:1, muted on white 4.77:1.
 - **Type** — Arvo (slab serif) for display, Montserrat for small uppercase UI
   labels, Open Sans for body. All three were already in the original site's
   font stack; Arvo's slab weight is what ties the headings to the crest.
 - **Recurring motifs**, defined as utilities in `app/globals.css`: `.eyebrow`
-  (small caps with a gold tick), `.ledger-rule` (the double hairline of a ruled
+  (small caps with a lion-coloured tick), `.ledger-rule` (the double hairline of a ruled
   accounts book), `.notch` (clips a panel's top corners like the shield),
-  `.texture` (the archived halftone pattern at 7% overlay).
-- **Dark mastheads** on every inner page — type, a gold radial wash, the
-  halftone texture and the crest as a watermark, closed with a red/gold rule.
+  `.texture` (a halftone dot grid generated from the lion colour).
+- **Dark mastheads** on every inner page — type, a lion radial wash, the
+  halftone texture and the crest as a watermark, closed with a red/lion rule.
 - Services are numbered editorial rows, not a grid of identical cards; the two
   long pages carry a sticky in-page nav; the header condenses on scroll.
 

@@ -1,5 +1,27 @@
+/**
+ * Canonical origin for metadata, sitemap, robots and JSON-LD.
+ *
+ * Order matters. An explicit NEXT_PUBLIC_SITE_URL always wins. Failing that
+ * we take whatever domain Vercel is actually serving, so a deploy never
+ * claims to live at tascentre.com.au while that domain is still parked —
+ * canonicals pointing at a dead host are worse than no canonicals.
+ *
+ * Only ever read from server components (layout, robots, sitemap,
+ * PageBanner); VERCEL_* are not exposed to the client bundle.
+ */
+const VERCEL_HOST =
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://tascentre.com.au";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (VERCEL_HOST ? `https://${VERCEL_HOST}` : "https://tascentre.com.au");
+
+/**
+ * True once the site is served from its real domain. Until then the deploy
+ * is a preview of a business that has not confirmed it wants to be online,
+ * so it should stay out of search results.
+ */
+export const IS_CANONICAL_HOST = !/\.vercel\.app$/.test(SITE_URL);
 
 export const SITE_NAME = "Tax, Accounting and Super Centre";
 

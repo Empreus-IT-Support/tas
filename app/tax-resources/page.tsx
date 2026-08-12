@@ -123,7 +123,7 @@ function DownloadGrid({
             href={i.href}
             className="group flex h-full items-start gap-4 bg-white p-6 hover:bg-paper"
           >
-            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-ink font-ui text-[10px] font-bold text-gold">
+            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-ink font-ui text-[10px] font-bold text-lion">
               {i.type}
             </span>
             <span className="flex-1">
@@ -159,7 +159,7 @@ export default function ResourcesPage() {
         intro="Fact sheets, calculators, checklists and the forms you need before we start your return."
       />
 
-      <div className="mx-auto max-w-6xl gap-16 px-5 py-20 sm:py-24 lg:grid lg:grid-cols-12">
+      <div className="mx-auto max-w-6xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">
             <p className="font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
@@ -170,7 +170,7 @@ export default function ResourcesPage() {
                 <li key={s.id}>
                   <a
                     href={`#${s.id}`}
-                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-gold hover:text-ink"
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-lion hover:text-ink"
                   >
                     {s.label}
                   </a>

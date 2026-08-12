@@ -21,7 +21,7 @@ export default function ContactPage() {
         intro="For prompt attention to your taxation and accounting, use the enquiry form or the details below."
       />
 
-      <div className="mx-auto grid max-w-6xl gap-14 px-5 py-20 sm:py-24 lg:grid-cols-12">
+      <div className="mx-auto grid max-w-6xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
         {/* ------------------------------------------------------------ Form */}
         <section className="lg:col-span-7">
           <p className="eyebrow">Send us a message</p>
@@ -37,7 +37,7 @@ export default function ContactPage() {
           <div className="notch relative overflow-hidden bg-ink p-9 text-white/70">
             <div
               aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-gold to-red"
+              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-lion to-red"
             />
             <p className="eyebrow eyebrow-light">Mount Isa QLD</p>
 
@@ -48,7 +48,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="flex gap-3.5 hover:text-white"
               >
-                <Pin className="mt-1 shrink-0 text-gold" />
+                <Pin className="mt-1 shrink-0 text-lion" />
                 <span>
                   {address.line1}
                   <br />
@@ -59,16 +59,16 @@ export default function ContactPage() {
               </a>
               <a
                 href={`tel:${BUSINESS.phoneHref}`}
-                className="flex items-center gap-3.5 font-display text-xl text-white hover:text-gold"
+                className="flex items-center gap-3.5 font-display text-xl text-white hover:text-lion"
               >
-                <Phone className="shrink-0 text-gold" />
+                <Phone className="shrink-0 text-lion" />
                 {BUSINESS.phone}
               </a>
               <a
                 href={`mailto:${BUSINESS.email}`}
                 className="flex items-center gap-3.5 hover:text-white"
               >
-                <Mail className="shrink-0 text-gold" />
+                <Mail className="shrink-0 text-lion" />
                 {BUSINESS.email}
               </a>
             </address>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                 href={BUSINESS.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-arrow text-gold"
+                className="link-arrow text-lion"
               >
                 View on map
                 <ArrowRight />
@@ -88,7 +88,7 @@ export default function ContactPage() {
 
           <div className="mt-8 border border-line p-9">
             <p className="flex items-center gap-3 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
-              <Clock className="text-gold-deep" />
+              <Clock className="text-lion-deep" />
               Opening hours
             </p>
             <dl className="mt-6">

@@ -58,7 +58,7 @@ export default function EnquiryForm({
     return (
       <p
         role="status"
-        className="notch border border-gold bg-gold/10 p-7 text-ink"
+        className="notch border border-lion bg-lion/10 p-7 text-ink"
       >
         Thank you for contacting Tax, Accounting and Super Centre. We will be in
         touch soon.

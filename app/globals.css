@@ -2,24 +2,34 @@
 
 /* ---------------------------------------------------------------------------
    Design tokens
-   The palette is taken from the TASC crest recovered from the archived site:
-   a black shield with a red outline and a gold lion rampant. Slab-serif
-   display type (Arvo) picks up the heraldic weight of the mark; Open Sans
-   carries body copy; Montserrat handles small uppercase UI labels. All three
-   were already loaded by the original site.
+
+   Slab-serif display type (Arvo) picks up the heraldic weight of the crest;
+   Open Sans carries body copy; Montserrat handles small uppercase UI labels.
+   All three were already loaded by the original site.
+
+   Palette sampled directly from public/images/logo.png (canvas pixel counts):
+   shield #030202 (9701px) · wordmark #d9dedf (6681px) · outline #e00101
+   (2875px) · lion #b8c72c (1739px). The lion is yellow-green, not gold, and
+   the silver wordmark is the mark's second-largest colour — both drive the
+   scheme, which is why the whole site reads cool rather than warm.
+   `lion-deep` is the same hue darkened for light backgrounds, where #b8c72c
+   only reaches 1.9:1 against white.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-ink: #0e1012;
-  --color-ink-2: #16191c;
-  --color-ink-3: #22262a;
-  --color-red: #d81b17;
-  --color-red-dark: #a81310;
-  --color-gold: #ffd82d;
-  --color-gold-deep: #b8860b;
-  --color-paper: #fbfaf8;
-  --color-line: #e4e1dc;
-  --color-body: #4a4e52;
-  --color-muted: #7b8085;
+  --color-ink: #030202;
+  --color-ink-2: #0d0f0f;
+  --color-ink-3: #1a1d1d;
+  --color-red: #e00101;
+  --color-red-dark: #ac0000;
+  --color-lion: #b8c72c;
+  --color-lion-deep: #67711a;
+  --color-silver: #d9dedf;
+  --color-paper: #f6f8f8;
+  --color-line: #dde1e2;
+  --color-body: #454b4c;
+  /* #7c8384 read nicer but only reached 3.86:1 on white, and every use of
+     `muted` is small text on a light surface. */
+  --color-muted: #6d7475;
 
   --font-display: var(--font-arvo), Georgia, serif;
   --font-body: var(--font-open-sans), Arial, Helvetica, sans-serif;
@@ -40,7 +50,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-gold);
+  background-color: var(--color-lion);
   color: var(--color-ink);
 }
 
@@ -56,11 +66,11 @@ h4 {
 }
 
 h1 {
-  font-size: clamp(2.25rem, 5.2vw, 3.75rem);
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
 }
 
 h2 {
-  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  font-size: clamp(1.5rem, 2.7vw, 2.125rem);
 }
 
 h3 {
@@ -78,7 +88,7 @@ h3 {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--color-gold-deep);
+  color: var(--color-lion-deep);
 }
 
 .eyebrow::before {
@@ -89,7 +99,7 @@ h3 {
 }
 
 .eyebrow-light {
-  color: var(--color-gold);
+  color: var(--color-lion);
 }
 
 .eyebrow-center {
@@ -137,15 +147,15 @@ h3 {
 .btn-primary:hover {
   background: var(--color-red-dark);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -12px rgba(216, 27, 23, 0.7);
+  box-shadow: 0 12px 24px -12px rgba(224, 1, 1, 0.7);
 }
 
-.btn-gold {
-  background: var(--color-gold);
+.btn-lion {
+  background: var(--color-lion);
   color: var(--color-ink);
 }
 
-.btn-gold:hover {
+.btn-lion:hover {
   background: #fff;
   transform: translateY(-2px);
 }
@@ -156,8 +166,8 @@ h3 {
 }
 
 .btn-ghost:hover {
-  border-color: var(--color-gold);
-  color: var(--color-gold);
+  border-color: var(--color-lion);
+  color: var(--color-lion);
 }
 
 /* --- Arrow link --------------------------------------------------------- */
@@ -193,7 +203,7 @@ h3 {
   bottom: -0.4rem;
   width: 100%;
   height: 2px;
-  background: var(--color-gold);
+  background: var(--color-lion);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -204,15 +214,21 @@ h3 {
   transform: scaleX(1);
 }
 
-/* --- Halftone texture, from the archived brand pattern ------------------ */
+/* --- Halftone texture ---------------------------------------------------
+   Generated from the lion colour rather than the archived pattern.jpg, which
+   is warm orange and fought the cool palette the logo actually calls for.
+   Costs no request and tints correctly by definition.
+------------------------------------------------------------------------- */
 .texture::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/images/pattern.jpg");
-  background-size: 620px;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
+  background-image: radial-gradient(
+    var(--color-lion) 0.8px,
+    transparent 0.9px
+  );
+  background-size: 13px 13px;
+  opacity: 0.055;
   pointer-events: none;
 }
 
@@ -242,7 +258,7 @@ select,
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-gold);
+  outline: 3px solid var(--color-lion);
   outline-offset: 3px;
 }
 

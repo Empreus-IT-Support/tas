@@ -58,7 +58,7 @@ function TickList({ items }: { items: string[] }) {
     <ul className="mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
       {items.map((item) => (
         <li key={item} className="flex gap-3 border-b border-line pb-3">
-          <span aria-hidden="true" className="mt-0.5 font-bold text-gold-deep">
+          <span aria-hidden="true" className="mt-0.5 font-bold text-lion-deep">
             ✓
           </span>
           <span className="text-[15px]">{item}</span>
@@ -107,7 +107,7 @@ export default function TaxationPage() {
         intro="Our aim is to lift the tax and accounting burden for you. We'll take care of your tax, accounting and financial concerns so you can enjoy a better work-life balance."
       />
 
-      <div className="mx-auto max-w-6xl gap-16 px-5 py-20 sm:py-24 lg:grid lg:grid-cols-12">
+      <div className="mx-auto max-w-6xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
         {/* In-page nav */}
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">
@@ -119,7 +119,7 @@ export default function TaxationPage() {
                 <li key={s.id}>
                   <a
                     href={`#${s.id}`}
-                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-gold hover:text-ink"
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-lion hover:text-ink"
                   >
                     {s.label}
                   </a>

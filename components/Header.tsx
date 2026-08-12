@@ -49,7 +49,7 @@ export default function Header() {
         }`}
       >
         <div className="mx-auto flex h-9 max-w-6xl items-center justify-between gap-6 px-5">
-          <p className="font-ui text-[10px] font-bold tracking-[0.26em] text-gold uppercase">
+          <p className="font-ui text-[10px] font-bold tracking-[0.26em] text-lion uppercase">
             Registered Tax Agent &amp; Public Accountant
           </p>
           <div className="flex items-center gap-6 text-[13px] text-white/55">
@@ -57,7 +57,7 @@ export default function Header() {
               href={`tel:${BUSINESS.phoneHref}`}
               className="flex items-center gap-2 hover:text-white"
             >
-              <Phone className="h-4 w-4 text-gold" />
+              <Phone className="h-4 w-4 text-lion" />
               <span className="font-semibold text-white/85">
                 {BUSINESS.phone}
               </span>
@@ -67,7 +67,7 @@ export default function Header() {
               href={`mailto:${BUSINESS.email}`}
               className="flex items-center gap-2 hover:text-white"
             >
-              <Mail className="h-4 w-4 text-gold" />
+              <Mail className="h-4 w-4 text-lion" />
               {BUSINESS.email}
             </a>
           </div>
@@ -107,7 +107,7 @@ export default function Header() {
                     title={item.label}
                     className={`nav-link block font-ui text-[11px] font-bold tracking-[0.16em] whitespace-nowrap uppercase ${
                       isActive(item.href)
-                        ? "text-gold"
+                        ? "text-lion"
                         : "text-white/80 hover:text-white"
                     }`}
                   >
@@ -131,7 +131,7 @@ export default function Header() {
             onClick={() => setOpen(true)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="ml-auto p-2 text-white hover:text-gold lg:hidden"
+            className="ml-auto p-2 text-white hover:text-lion lg:hidden"
           >
             <span className="sr-only">Open menu</span>
             <svg
@@ -153,7 +153,7 @@ export default function Header() {
 
         <div
           aria-hidden="true"
-          className="h-px bg-gradient-to-r from-transparent via-gold/45 to-transparent"
+          className="h-px bg-gradient-to-r from-transparent via-lion/45 to-transparent"
         />
       </div>
 
@@ -183,7 +183,7 @@ export default function Header() {
                   type="button"
                   autoFocus
                   onClick={() => setOpen(false)}
-                  className="p-2 text-white hover:text-gold"
+                  className="p-2 text-white hover:text-lion"
                 >
                   <span className="sr-only">Close menu</span>
                   <svg
@@ -215,8 +215,8 @@ export default function Header() {
                           0{i + 1}
                         </span>
                         <span
-                          className={`font-display text-xl group-hover:text-gold ${
-                            isActive(item.href) ? "text-gold" : "text-white"
+                          className={`font-display text-xl group-hover:text-lion ${
+                            isActive(item.href) ? "text-lion" : "text-white"
                           }`}
                         >
                           {item.label}
@@ -230,7 +230,7 @@ export default function Header() {
               <div className="relative space-y-3 border-t border-white/10 px-6 py-6">
                 <a
                   href={`tel:${BUSINESS.phoneHref}`}
-                  className="btn btn-gold w-full justify-center"
+                  className="btn btn-lion w-full justify-center"
                 >
                   <Phone className="h-4 w-4" />
                   {BUSINESS.phone}

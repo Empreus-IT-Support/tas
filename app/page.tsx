@@ -67,33 +67,29 @@ export default function HomePage() {
       <section className="texture relative isolate overflow-hidden bg-ink">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-40 -right-56 h-[52rem] w-[52rem] rounded-full bg-[radial-gradient(circle,rgba(255,216,45,0.16),transparent_62%)]"
+          className="pointer-events-none absolute -top-40 -right-56 h-[52rem] w-[52rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.16),transparent_62%)]"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-64 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(216,27,23,0.22),transparent_65%)]"
+          className="pointer-events-none absolute -bottom-64 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(224,1,1,0.22),transparent_65%)]"
         />
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-16 sm:pt-28 sm:pb-24">
-          <div className="grid items-center gap-14 lg:grid-cols-12">
+        <div className="relative mx-auto max-w-6xl px-5 pt-12 pb-10 sm:pt-16 sm:pb-14">
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-7">
               <p className="eyebrow eyebrow-light">
                 Tax &amp; financial advice in Mount Isa
               </p>
-              <h1 className="mt-6 text-white">
-                Maximise your returns
-                <br />
-                by letting us{" "}
-                <span className="relative whitespace-nowrap text-gold">
-                  minimise your tax
-                </span>
+              <h1 className="mt-5 max-w-[26ch] text-white">
+                Maximise your returns by letting us{" "}
+                <span className="text-lion">minimise your tax</span>
               </h1>
-              <p className="mt-7 max-w-xl text-lg text-white/70">
+              <p className="mt-5 max-w-xl text-silver/75">
                 At TASC you get qualified staff, precise and up-to-date advice,
                 and a friendly service that keeps the effort on our side of the
                 desk — not yours.
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/contact-us" className="btn btn-primary">
                   Book an appointment
                   <ArrowRight />
@@ -110,33 +106,33 @@ export default function HomePage() {
 
             {/* Credentials panel */}
             <div className="lg:col-span-5">
-              <div className="notch relative mx-auto max-w-sm border border-white/10 bg-white/[0.04] p-9 backdrop-blur-sm">
+              <div className="notch relative mx-auto max-w-sm border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-gold to-red"
+                  className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-lion to-red"
                 />
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-4">
                   <Image
                     src="/images/tax-practitioners-board.png"
                     alt="Registered with the Tax Practitioners Board"
                     width={120}
                     height={140}
-                    className="h-20 w-auto"
+                    className="h-16 w-auto"
                   />
-                  <p className="font-display text-lg leading-snug text-white">
+                  <p className="font-display leading-snug text-white">
                     Registered with the Tax&nbsp;Practitioners Board
                   </p>
                 </div>
 
-                <div className="ledger-rule my-7 border-white/15" />
+                <div className="ledger-rule my-5 border-white/15" />
 
-                <dl className="space-y-5">
+                <dl className="space-y-3.5">
                   {CREDENTIALS.map((c) => (
-                    <div key={c.label} className="flex items-baseline gap-4">
-                      <dt className="font-display text-base whitespace-nowrap text-gold">
+                    <div key={c.label} className="flex items-baseline gap-3">
+                      <dt className="font-display text-[15px] whitespace-nowrap text-lion">
                         {c.value}
                       </dt>
-                      <dd className="text-sm text-white/55">{c.label}</dd>
+                      <dd className="text-sm text-silver/55">{c.label}</dd>
                     </div>
                   ))}
                 </dl>
@@ -149,9 +145,9 @@ export default function HomePage() {
         <div className="relative border-t border-white/10">
           <ul className="mx-auto grid max-w-6xl divide-y divide-white/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {FACTS.map((f) => (
-              <li key={f.label} className="py-6 sm:px-8 sm:first:pl-0 sm:last:pr-0">
-                <p className="font-display text-2xl text-gold">{f.value}</p>
-                <p className="mt-1.5 font-ui text-[10px] font-bold tracking-[0.22em] text-white/45 uppercase">
+              <li key={f.label} className="py-4 sm:px-8 sm:first:pl-0 sm:last:pr-0">
+                <p className="font-display text-xl text-lion">{f.value}</p>
+                <p className="mt-1 font-ui text-[10px] font-bold tracking-[0.22em] text-silver/60 uppercase">
                   {f.label}
                 </p>
               </li>
@@ -161,12 +157,12 @@ export default function HomePage() {
 
         <div
           aria-hidden="true"
-          className="h-1 bg-gradient-to-r from-red via-gold to-red"
+          className="h-1 bg-gradient-to-r from-red via-lion to-red"
         />
       </section>
 
       {/* ------------------------------------------------------------- Intro */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow">Who we are</p>
@@ -202,7 +198,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------------------------------------------------------- Services */}
-      <section className="border-y border-line bg-paper py-20 sm:py-28">
+      <section className="border-y border-line bg-paper py-14 sm:py-20">
         <div className="mx-auto max-w-6xl px-5">
           <div className="max-w-2xl">
             <p className="eyebrow">What we do</p>
@@ -219,9 +215,9 @@ export default function HomePage() {
                   {/* gold rule sweeps in along the bottom on hover */}
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-gold transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+                    className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-lion transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
                   />
-                  <span className="font-display text-3xl text-line transition-colors group-hover:text-gold md:col-span-1">
+                  <span className="font-display text-3xl text-line transition-colors group-hover:text-lion md:col-span-1">
                     {s.n}
                   </span>
                   <h3 className="transition-transform duration-300 group-hover:text-red md:col-span-4 md:group-hover:translate-x-1">
@@ -240,7 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------- Remote lodgement */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:py-28">
+      <section className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
         <div className="max-w-2xl">
           <p className="eyebrow">Out of area?</p>
           <h2 className="mt-5">Remote lodgement, in three steps</h2>
@@ -254,7 +250,7 @@ export default function HomePage() {
         <ol className="mt-14 grid gap-px overflow-hidden border border-line bg-line md:grid-cols-3">
           {STEPS.map((step) => (
             <li key={step.n} className="bg-white p-9">
-              <span className="flex h-11 w-11 items-center justify-center bg-ink font-display text-lg text-gold">
+              <span className="flex h-11 w-11 items-center justify-center bg-ink font-display text-lg text-lion">
                 {step.n}
               </span>
               <h3 className="mt-6">{step.title}</h3>
@@ -278,7 +274,7 @@ export default function HomePage() {
       <section className="texture relative isolate overflow-hidden bg-ink">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-32 right-1/4 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(255,216,45,0.13),transparent_65%)]"
+          className="pointer-events-none absolute -top-32 right-1/4 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.13),transparent_65%)]"
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-5 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -290,7 +286,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-4">
-            <Link href="/contact-us" className="btn btn-gold">
+            <Link href="/contact-us" className="btn btn-lion">
               Get in touch
               <ArrowRight />
             </Link>

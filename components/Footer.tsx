@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="texture relative isolate overflow-hidden bg-ink text-white/60">
       <div
         aria-hidden="true"
-        className="h-1 bg-gradient-to-r from-red via-gold to-red"
+        className="h-1 bg-gradient-to-r from-red via-lion to-red"
       />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-5 py-16 md:grid-cols-12 sm:py-20">
@@ -43,7 +43,7 @@ export default function Footer() {
         </div>
 
         <div className="md:col-span-4">
-          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-gold uppercase">
+          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-lion uppercase">
             Mount Isa Office
           </h2>
           <address className="mt-6 space-y-4 text-[15px] not-italic">
@@ -53,7 +53,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="flex gap-3 hover:text-white"
             >
-              <Pin className="mt-1 shrink-0 text-gold" />
+              <Pin className="mt-1 shrink-0 text-lion" />
               <span>
                 {address.line1}
                 <br />
@@ -64,23 +64,23 @@ export default function Footer() {
             </a>
             <a
               href={`tel:${BUSINESS.phoneHref}`}
-              className="flex items-center gap-3 font-semibold text-white hover:text-gold"
+              className="flex items-center gap-3 font-semibold text-white hover:text-lion"
             >
-              <Phone className="shrink-0 text-gold" />
+              <Phone className="shrink-0 text-lion" />
               {BUSINESS.phone}
             </a>
             <a
               href={`mailto:${BUSINESS.email}`}
               className="flex items-center gap-3 hover:text-white"
             >
-              <Mail className="shrink-0 text-gold" />
+              <Mail className="shrink-0 text-lion" />
               {BUSINESS.email}
             </a>
           </address>
         </div>
 
         <div className="md:col-span-3">
-          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-gold uppercase">
+          <h2 className="font-ui text-[11px] font-bold tracking-[0.28em] text-lion uppercase">
             Explore
           </h2>
           <ul className="mt-6 space-y-3 text-[15px]">
@@ -92,7 +92,7 @@ export default function Footer() {
                 >
                   <span
                     aria-hidden="true"
-                    className="h-px w-3 bg-gold/50 transition-all"
+                    className="h-px w-3 bg-lion/50 transition-all"
                   />
                   {item.label}
                 </Link>
@@ -120,7 +120,7 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-            <p className="text-white/40">
+            <p className="text-silver/55">
               &copy; {new Date().getFullYear()} {SITE_NAME}
             </p>
           </div>

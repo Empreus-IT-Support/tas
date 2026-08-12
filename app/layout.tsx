@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Arvo, Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -33,6 +33,11 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: BUSINESS.legalName,
+  formatDetection: { telephone: true, address: true, email: true },
   keywords: [
     "tax agent Mount Isa",
     "accountant Mount Isa",
@@ -68,6 +73,11 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#030202",
+  colorScheme: "light",
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AccountingService",
@@ -95,7 +105,30 @@ const jsonLd = {
       closes: "17:30",
     },
   ],
-  areaServed: ["Mount Isa QLD", "North West Queensland", "Australia"],
+  priceRange: "$$",
+  currenciesAccepted: "AUD",
+  // Approximate — Mount Isa town centre, not a surveyed position for the
+  // shopfront. Confirm before go-live (see README).
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: -20.7256,
+    longitude: 139.4927,
+  },
+  sameAs: [
+    "https://www.localsearch.com.au/profile/tax-accounting-and-super-centre/mount-isa-qld/LyOC",
+  ],
+  areaServed: [
+    { "@type": "City", name: "Mount Isa" },
+    { "@type": "AdministrativeArea", name: "North West Queensland" },
+    { "@type": "Country", name: "Australia" },
+  ],
+  knowsAbout: [
+    "Income tax returns",
+    "Business activity statements",
+    "Self-managed superannuation funds",
+    "Business structures",
+    "Fringe benefits tax",
+  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Tax and Accounting Services",

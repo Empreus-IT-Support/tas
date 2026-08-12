@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
 
 /**
  * Dark masthead used at the top of every inner page. Built from type, the
@@ -10,13 +11,36 @@ export default function PageBanner({
   eyebrow,
   title,
   intro,
+  path,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
+  /** Page path, e.g. "/about-us" — emits BreadcrumbList structured data. */
+  path?: string;
 }) {
+  const breadcrumbLd = path && {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: eyebrow,
+        item: `${SITE_URL}${path}`,
+      },
+    ],
+  };
+
   return (
     <section className="texture relative isolate overflow-hidden bg-ink">
+      {breadcrumbLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        />
+      )}
       {/* Gold wash bleeding in from the right */}
       <div
         aria-hidden="true"

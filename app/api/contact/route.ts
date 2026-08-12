@@ -39,7 +39,43 @@ function rateLimited(ip: string) {
   return entry.count > MAX_PER_WINDOW;
 }
 
+// Reject anything larger than a legitimate enquiry before parsing it.
+const MAX_BODY_BYTES = 16 * 1024;
+
+/**
+ * Same-origin check. The browser always sends Origin on a cross-origin POST,
+ * so a mismatch means the request did not come from our own form. Requests
+ * with no Origin at all (curl, server-to-server) are allowed through to the
+ * validation below rather than blocked outright.
+ */
+function crossOrigin(req: NextRequest) {
+  const origin = req.headers.get("origin");
+  if (!origin) return false;
+  const host = req.headers.get("host");
+  try {
+    return new URL(origin).host !== host;
+  } catch {
+    return true;
+  }
+}
+
 export async function POST(req: NextRequest) {
+  if (crossOrigin(req)) {
+    return NextResponse.json({ error: "Invalid request." }, { status: 403 });
+  }
+
+  if (!req.headers.get("content-type")?.includes("application/json")) {
+    return NextResponse.json(
+      { error: "Invalid request." },
+      { status: 415 }
+    );
+  }
+
+  const declared = Number(req.headers.get("content-length") ?? 0);
+  if (declared > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request too large." }, { status: 413 });
+  }
+
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   if (rateLimited(ip)) {
@@ -51,7 +87,16 @@ export async function POST(req: NextRequest) {
 
   let body: Record<string, unknown>;
   try {
-    body = await req.json();
+    const raw = await req.text();
+    // content-length can lie or be absent; check what actually arrived.
+    if (raw.length > MAX_BODY_BYTES) {
+      return NextResponse.json({ error: "Request too large." }, { status: 413 });
+    }
+    const parsed = JSON.parse(raw);
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
+    body = parsed as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }

@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Keep Informed",
   description:
     "Sign up for tax tips, tax-related information and promotions from Tax, Accounting and Super Centre in Mount Isa.",
+  alternates: { canonical: "/keep-informed" },
 };
 
 const PROMISES = [
@@ -27,6 +28,7 @@ export default function KeepInformedPage() {
   return (
     <>
       <PageBanner
+        path="/keep-informed"
         eyebrow="Keep Informed"
         title="A step ahead of the game"
         intro="Enter your details to receive regular information updates from Tax, Accounting and Super Centre."

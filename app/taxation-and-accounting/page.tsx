@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Taxation & Accounting",
   description:
     "Registered tax agent and public accountant in Mount Isa: tax returns and financial statements for individuals, partnerships, companies, trusts and SMSFs, plus GST, IAS, ABN, PAYG, FTC and FBT.",
+  alternates: { canonical: "/taxation-and-accounting" },
 };
 
 const SECTIONS = [
@@ -102,6 +103,7 @@ export default function TaxationPage() {
   return (
     <>
       <PageBanner
+        path="/taxation-and-accounting"
         eyebrow="Taxation & Accounting"
         title="Tax & accounting in Mount Isa"
         intro="Our aim is to lift the tax and accounting burden for you. We'll take care of your tax, accounting and financial concerns so you can enjoy a better work-life balance."

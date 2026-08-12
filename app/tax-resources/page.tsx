@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Tax Resources",
   description:
     "Fact sheets, ATO calculators, checklists and downloadable forms from Tax, Accounting and Super Centre in Mount Isa.",
+  alternates: { canonical: "/tax-resources" },
 };
 
 // NOTE: ATO deep links are carried over from the archived site. The ATO has
@@ -154,6 +155,7 @@ export default function ResourcesPage() {
   return (
     <>
       <PageBanner
+        path="/tax-resources"
         eyebrow="Tax Resources"
         title="Taxation & accounting support in Mount Isa"
         intro="Fact sheets, calculators, checklists and the forms you need before we start your return."

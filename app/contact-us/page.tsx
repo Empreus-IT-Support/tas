@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Contact Us",
   description:
     "Contact Tax, Accounting and Super Centre in Mount Isa — 26 East Street, Turanga Shopping Centre. Phone 07 4743 6342 or send an enquiry.",
+  alternates: { canonical: "/contact-us" },
 };
 
 export default function ContactPage() {
@@ -16,6 +17,7 @@ export default function ContactPage() {
   return (
     <>
       <PageBanner
+        path="/contact-us"
         eyebrow="Contact Us"
         title="Let's get your return moving"
         intro="For prompt attention to your taxation and accounting, use the enquiry form or the details below."

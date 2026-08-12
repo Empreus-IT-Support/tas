@@ -7,12 +7,14 @@ export const metadata: Metadata = {
   title: "About Us",
   description:
     "Tax, Accounting and Super Centre began in Mount Isa as Steve Williams and Co. Read our story, our mission and vision, and meet our management.",
+  alternates: { canonical: "/about-us" },
 };
 
 export default function AboutPage() {
   return (
     <>
       <PageBanner
+        path="/about-us"
         eyebrow="About Us"
         title="We keep it fun, friendly and real"
         intro="We enjoy and respect what we do. Our success has come from local knowledge, prompt service, and never treating clients as numbers."

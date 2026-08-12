@@ -36,49 +36,64 @@
   --font-ui: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Element defaults MUST live in `@layer base`. Unlayered CSS outranks every
+   layer, so an unlayered `h1 { color: ... }` beat Tailwind's `utilities`
+   layer and made `text-white` headings render ink-on-ink — invisible on
+   every dark masthead. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #fff;
+    color: var(--color-body);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-lion);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-lion);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(1.875rem, 4.2vw, 3.25rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 2.7vw, 2.125rem);
+  }
+
+  h3 {
+    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+    letter-spacing: -0.005em;
+  }
 }
 
-body {
-  background-color: #fff;
-  color: var(--color-body);
-  font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.75;
-  -webkit-font-smoothing: antialiased;
-}
+/* Components sit in their own layer so utilities can still override them. */
+@layer components {
 
-::selection {
-  background-color: var(--color-lion);
-  color: var(--color-ink);
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  color: var(--color-ink);
-  font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
-}
-
-h1 {
-  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
-}
-
-h2 {
-  font-size: clamp(1.5rem, 2.7vw, 2.125rem);
-}
-
-h3 {
-  font-size: clamp(1.125rem, 1.8vw, 1.375rem);
-  letter-spacing: -0.005em;
-}
-
-/* --- Eyebrow: small caps label with a gold tick ------------------------- */
+/* --- Eyebrow: small caps label with a lion-coloured tick ---------------- */
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -246,8 +261,7 @@ a,
 button,
 input,
 textarea,
-select,
-.card {
+select {
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
@@ -255,11 +269,6 @@ select,
     box-shadow 0.25s ease,
     opacity 0.2s ease,
     transform 0.25s ease;
-}
-
-:focus-visible {
-  outline: 3px solid var(--color-lion);
-  outline-offset: 3px;
 }
 
 /* --- Mobile drawer ------------------------------------------------------
@@ -304,6 +313,8 @@ select,
     animation-duration: 0.01ms;
   }
 }
+
+} /* end @layer components */
 
 /* --- Scroll reveal (classes applied by components/ScrollReveal.tsx) ------ */
 @media (prefers-reduced-motion: no-preference) {

@@ -71,7 +71,39 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 - [ ] Set `RESEND_API_KEY` in the deployment environment and verify the sending
       domain in Resend.
 - [ ] Add a real favicon — `app/icon.svg` is a placeholder built from the brand
+- [ ] **Confirm the map coordinates** in the JSON-LD in `app/layout.tsx`. They are Mount Isa town centre, not a surveyed position for the shopfront.
       colours, not the TASC crest.
+
+## SEO
+
+- Per-page `alternates.canonical`; `metadataBase` from `SITE_URL`.
+- `app/opengraph-image.tsx` generates a 1200×630 PNG at build time from the
+  brand palette — no remote fonts or images, so it renders identically
+  anywhere. Note it fails under the Turbopack **dev** server
+  (`Input buffer contains unsupported image format`) but builds fine; check it
+  via `npm run build` rather than `npm run dev`. Satori also rejects
+  `radial-gradient` here, hence the flat crest stripe.
+- `AccountingService` JSON-LD in the layout with address, hours, geo,
+  `areaServed`, `knowsAbout` and `sameAs`; `BreadcrumbList` on every inner
+  page via `PageBanner`'s `path` prop.
+- `sitemap.ts`, `robots.ts`, `viewport.themeColor`, `lang="en-AU"`.
+
+## Hardening
+
+- CSP locks everything to same-origin: no third-party scripts, fonts, frames
+  or images are loaded at all. `script-src` keeps `'unsafe-inline'`
+  deliberately — nonce-based CSP needs middleware that stamps a per-request
+  nonce, which would force every route out of static generation. That is a
+  real cost for a fully static site with no third-party or user-generated
+  script.
+- Also set: HSTS (preload), `X-Content-Type-Options`, `X-Frame-Options`,
+  `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`,
+  `Cross-Origin-Resource-Policy`, `X-Permitted-Cross-Domain-Policies`,
+  `Origin-Agent-Cluster`. `/api/*` is `no-store` + `noindex`.
+- `/api/contact` rejects cross-origin posts (403), non-JSON content types
+  (415), bodies over 16KB (413, checked against both `content-length` and
+  what actually arrived) and non-object JSON (400), on top of the existing
+  honeypot and 5/min/IP rate limit.
 
 ## Design
 

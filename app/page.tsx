@@ -74,17 +74,18 @@ export default function HomePage() {
           className="pointer-events-none absolute -bottom-64 -left-40 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(224,1,1,0.22),transparent_65%)]"
         />
 
-        <div className="relative mx-auto max-w-6xl px-5 pt-12 pb-10 sm:pt-16 sm:pb-14">
+        <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-12 sm:pt-20 sm:pb-16">
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <div className="lg:col-span-7">
               <p className="eyebrow eyebrow-light">
                 Tax &amp; financial advice in Mount Isa
               </p>
-              <h1 className="mt-5 max-w-[26ch] text-white">
-                Maximise your returns by letting us{" "}
-                <span className="text-lion">minimise your tax</span>
+              <h1 className="mt-5 text-white">
+                Maximise your returns.
+                <br />
+                <span className="text-lion">Minimise your tax.</span>
               </h1>
-              <p className="mt-5 max-w-xl text-silver/75">
+              <p className="mt-6 max-w-xl text-silver/75">
                 At TASC you get qualified staff, precise and up-to-date advice,
                 and a friendly service that keeps the effort on our side of the
                 desk — not yours.

@@ -34,7 +34,7 @@ export default function PageBanner({
   };
 
   return (
-    <section className="texture relative isolate overflow-hidden bg-ink">
+    <section className="texture ruled relative isolate overflow-hidden bg-ink">
       {breadcrumbLd && (
         <script
           type="application/ld+json"

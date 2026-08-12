@@ -59,7 +59,7 @@ export default function Header() {
             >
               <Phone className="h-4 w-4 text-lion" />
               <span className="font-semibold text-white/85">
-                {BUSINESS.phone}
+                <span className="tnum">{BUSINESS.phone}</span>
               </span>
             </a>
             <span aria-hidden="true" className="h-3 w-px bg-white/15" />
@@ -233,7 +233,7 @@ export default function Header() {
                   className="btn btn-lion w-full justify-center"
                 >
                   <Phone className="h-4 w-4" />
-                  {BUSINESS.phone}
+                  <span className="tnum">{BUSINESS.phone}</span>
                 </a>
                 <Link
                   href="/contact-us"

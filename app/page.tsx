@@ -84,7 +84,7 @@ export default function HomePage() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      <section className="texture relative isolate overflow-hidden bg-ink">
+      <section className="texture ruled relative isolate overflow-hidden bg-ink">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-40 -right-56 h-[52rem] w-[52rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.16),transparent_62%)]"
@@ -120,7 +120,7 @@ export default function HomePage() {
                   className="btn btn-ghost"
                 >
                   <Phone />
-                  {BUSINESS.phone}
+                  <span className="tnum">{BUSINESS.phone}</span>
                 </a>
               </div>
             </div>
@@ -255,7 +255,7 @@ export default function HomePage() {
                     aria-hidden="true"
                     className="absolute inset-x-0 bottom-[-1px] h-0.5 origin-left scale-x-0 bg-lion transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
                   />
-                  <span className="font-display text-4xl leading-none text-line transition-colors duration-300 group-hover:text-lion md:col-span-1">
+                  <span className="tnum font-display text-4xl leading-none text-line transition-colors duration-300 group-hover:text-lion md:col-span-1">
                     {s.n}
                   </span>
                   <h3 className="text-[1.375rem] transition-transform duration-300 group-hover:text-red md:col-span-4 md:group-hover:translate-x-1">
@@ -309,7 +309,7 @@ export default function HomePage() {
       </section>
 
       {/* ------------------------------------------------------- Why TASC */}
-      <section className="texture relative isolate overflow-hidden bg-ink py-14 sm:py-20">
+      <section className="texture ruled relative isolate overflow-hidden bg-ink py-14 sm:py-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-56 -left-40 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(184,199,44,0.12),transparent_65%)]"
@@ -327,7 +327,7 @@ export default function HomePage() {
           <ul className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {REASONS.map((r, i) => (
               <li key={r.title} className="border-t border-white/15 pt-6">
-                <span className="font-ui text-[10px] font-bold tracking-[0.24em] text-lion">
+                <span className="tnum font-ui text-[10px] font-bold tracking-[0.24em] text-lion">
                   0{i + 1}
                 </span>
                 <h3 className="mt-4 text-white">{r.title}</h3>
@@ -360,7 +360,7 @@ export default function HomePage() {
             </Link>
             <a href={`tel:${BUSINESS.phoneHref}`} className="btn btn-ghost">
               <Phone />
-              {BUSINESS.phone}
+              <span className="tnum">{BUSINESS.phone}</span>
             </a>
           </div>
         </div>

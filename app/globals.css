@@ -247,6 +247,29 @@
   pointer-events: none;
 }
 
+/* --- Ruled: faint horizontal lines, like a page of an accounts ledger ---
+   Pairs with .texture on dark sections. The rhythm (34px) is deliberately
+   off the type grid so it reads as paper rather than as a baseline guide.
+------------------------------------------------------------------------- */
+.ruled::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(217, 222, 223, 0.055) 0 1px,
+    transparent 1px 34px
+  );
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  pointer-events: none;
+}
+
+/* Lining, fixed-width figures — phone numbers, ABNs and section numerals
+   should not wobble between weights. */
+.tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
 /* --- Prose -------------------------------------------------------------- */
 .prose-tasc p + p {
   margin-top: 1.25rem;

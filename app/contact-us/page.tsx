@@ -64,7 +64,7 @@ export default function ContactPage() {
                 className="flex items-center gap-3.5 font-display text-xl text-white hover:text-lion"
               >
                 <Phone className="shrink-0 text-lion" />
-                {BUSINESS.phone}
+                <span className="tnum">{BUSINESS.phone}</span>
               </a>
               <a
                 href={`mailto:${BUSINESS.email}`}

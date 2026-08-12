@@ -67,7 +67,7 @@ export default function Footer() {
               className="flex items-center gap-3 font-semibold text-white hover:text-lion"
             >
               <Phone className="shrink-0 text-lion" />
-              {BUSINESS.phone}
+              <span className="tnum">{BUSINESS.phone}</span>
             </a>
             <a
               href={`mailto:${BUSINESS.email}`}
@@ -107,7 +107,7 @@ export default function Footer() {
           <p className="font-ui text-[11px] font-bold tracking-[0.16em] text-white/80 uppercase">
             {BUSINESS.legalName} t/a {SITE_NAME}
           </p>
-          <p className="mt-2">ABN {BUSINESS.abn}</p>
+          <p className="mt-2"><span className="tnum">ABN {BUSINESS.abn}</span></p>
           <p>{BUSINESS.authorisedRep}</p>
 
           <div className="mt-7 flex flex-col justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center">
@@ -124,6 +124,11 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} {SITE_NAME}
             </p>
           </div>
+
+          <p className="mt-6 flex items-center gap-2.5 border-t border-white/10 pt-6 font-ui text-[10px] font-bold tracking-[0.22em] text-silver/50 uppercase">
+            <span aria-hidden="true" className="h-px w-6 bg-lion/60" />
+            Managed by Empreus IT Support
+          </p>
         </div>
       </div>
     </footer>

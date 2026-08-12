@@ -108,12 +108,14 @@ const jsonLd = {
   ],
   priceRange: "$$",
   currenciesAccepted: "AUD",
-  // Approximate — Mount Isa town centre, not a surveyed position for the
-  // shopfront. Confirm before go-live (see README).
+  // East Street, Mount Isa, from OpenStreetMap (Nominatim) — the previous
+  // value was town-centre and about 1km west of the street. Nominatim has no
+  // entry for Turanga Shopping Centre, so this is the street rather than the
+  // shopfront; confirm the exact position before go-live (see README).
   geo: {
     "@type": "GeoCoordinates",
-    latitude: -20.7256,
-    longitude: 139.4927,
+    latitude: -20.7264,
+    longitude: 139.5024,
   },
   sameAs: [
     "https://www.localsearch.com.au/profile/tax-accounting-and-super-centre/mount-isa-qld/LyOC",

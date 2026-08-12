@@ -49,9 +49,17 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
 
 ## Before go-live
 
-- [ ] **Confirm the business is still trading and wants this.** The domain is
-      parked and the practice had contracted to tax/accounting only before it
-      went dark — verify with the client before publishing anything.
+- [!] **THE BUSINESS HAS REBRANDED — read this before anything else.**
+      Checked 2026-08-12 against public registers. Thunder Tax Pty Ltd
+      (ABN 99 123 853 681) is **active**, GST-registered, ABR record updated
+      03 Jul 2026 — but it now trades as **Wealthpoint Financial Planning**
+      (business name registered 29 Feb 2024) with a live site at
+      wealthpointfp.com.au. Same address, same phone 07 4743 6342, same
+      CAR #1276821 of Mawson Wealth AFSL 552819. Their site makes no mention
+      of TASC, and they now list three offices (Mount Isa, Ashgrove,
+      Tuggeranong ACT). tascentre.com.au was very likely allowed to lapse on
+      purpose. **This rebuild may be reviving a retired brand — confirm the
+      client actually wants it before going further.**
 - [ ] **Verify every business detail in `lib/site.ts`** against the client:
       address, phone, email, hours, ABN, and especially the authorised
       representative line. The archive shows this changed from InterPrac
@@ -70,10 +78,11 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
       Get current versions from the client.
 - [ ] Set `RESEND_API_KEY` in the deployment environment and verify the sending
       domain in Resend.
-- [ ] Add a real favicon — `app/icon.svg` is a placeholder built from the brand
-      colours, not the TASC crest.
-- [ ] **Confirm the map coordinates** in the JSON-LD in `app/layout.tsx`. They
-      are Mount Isa town centre, not a surveyed position for the shopfront.
+- [x] ~~Add a real favicon.~~ Done 2026-08-12: `app/icon.png` is the crest
+      itself, cropped from `logo.png` by detecting the red outline bounds.
+- [~] **Map coordinates** improved 2026-08-12 — the old value was town-centre
+      and ~1km west. Now East Street from OpenStreetMap, but Nominatim has no
+      entry for Turanga Shopping Centre, so it is the street not the shopfront.
 - [ ] **Point the domain at Vercel.** `tascentre.com.au` currently resolves to
       a registrar parking page at 103.42.108.46 and its HTTPS is broken at the
       TLS handshake. Until the DNS is changed, `robots.ts` deliberately keeps

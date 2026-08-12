@@ -294,6 +294,68 @@ select {
     transform 0.25s ease;
 }
 
+/* --- Preloader ----------------------------------------------------------
+   The CSS is authoritative, not the JavaScript. The overlay is server
+   rendered, so were hydration to fail it would otherwise cover the site
+   forever; this keyframe retires it unaided and JS can only bring that
+   forward. `visibility: hidden` (not just opacity) so it stops swallowing
+   clicks even if it lingers.
+------------------------------------------------------------------------- */
+@keyframes preloader-out {
+  0%,
+  62% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes preloader-crest-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes preloader-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.preloader {
+  animation: preloader-out 1.9s ease forwards;
+}
+
+.preloader-crest {
+  animation: preloader-crest-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.preloader-bar {
+  animation: preloader-bar 1.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    animation-duration: 0.01ms;
+  }
+
+  .preloader-crest,
+  .preloader-bar {
+    animation: none;
+  }
+}
+
 /* --- Mobile drawer ------------------------------------------------------
    The panel mounts only while open, so nothing focusable sits off-screen
    when it is closed. Note there is no animation fill-mode: the resting

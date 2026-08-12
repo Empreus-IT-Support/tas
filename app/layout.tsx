@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import Preloader from "@/components/Preloader";
 import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Arvo, Montserrat and Open Sans were all loaded by the original TASC site —
@@ -163,6 +164,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <Preloader />
         <Header />
         <main id="main">{children}</main>
         <Footer />

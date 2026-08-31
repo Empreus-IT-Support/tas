@@ -116,8 +116,24 @@ failing silently. Copy `.env.example` to `.env.local` to configure.
   `Origin-Agent-Cluster`. `/api/*` is `no-store` + `noindex`.
 - `/api/contact` rejects cross-origin posts (403), non-JSON content types
   (415), bodies over 16KB (413, checked against both `content-length` and
-  what actually arrived) and non-object JSON (400), on top of the existing
-  honeypot and 5/min/IP rate limit.
+  what actually arrived) and non-object JSON (400), on top of the honeypot.
+- **Rate limiting is two-layer, and the global layer is the one that matters.**
+  A per-IP limit alone was worthless: `x-forwarded-for` is attacker-supplied,
+  and rotating it let 8 of 8 requests through in testing. Client IP is now
+  taken from `x-vercel-forwarded-for` (set at Vercel's edge, overwrites what
+  the client sends), then `x-real-ip`, then the *rightmost* XFF entry. Behind
+  no proxy at all — local dev — per-IP remains spoofable, which is inherent.
+  So there is also a hard ceiling of 30 sends per 10 minutes across all
+  callers, which bounds mailbox flooding and Resend quota burn regardless of
+  claimed address. Verified: 30 through, then 429.
+- The IP bucket map prunes expired entries and hard-clears past 5,000 keys —
+  previously it grew without bound, one entry per distinct address, forever.
+- Control characters are stripped from `name`, `email` and `phone` before they
+  reach the mail API, since `name` is interpolated into the subject line and a
+  CR/LF there is a header-injection primitive on any transport that renders
+  raw SMTP. The message body keeps its newlines. The email pattern now also
+  rejects angle brackets, commas, quotes and semicolons so a value cannot be
+  read as an address list.
 
 ## Design
 

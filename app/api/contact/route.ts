@@ -17,19 +17,65 @@ const FIELD_LIMITS: Record<string, number> = {
   message: 2000,
 };
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Angle brackets, commas and quotes are excluded so a value can never be read
+// as an address list or a display-name construct once it reaches the mail API.
+const EMAIL_RE = /^[^\s@<>,"';]+@[^\s@<>,"';]+\.[^\s@<>,"';]+$/;
 const PHONE_RE = /^[0-9+()\-\s]{6,20}$/;
 
 const FALLBACK = `Please call ${BUSINESS.phone} or email ${BUSINESS.email}.`;
 
-// Simple in-memory rate limit. Per-instance only — enough to blunt casual
-// abuse; a serverless deployment gets one bucket per warm instance.
+/**
+ * Strip anything that could act as a control character once the value is
+ * interpolated into a mail header. `name` ends up in the subject line, so a
+ * CR/LF there is a header-injection primitive if the transport ever renders
+ * it as raw SMTP rather than JSON.
+ */
+// Built via RegExp so the source stays plain ASCII — writing the class as
+// literal control bytes turns this file binary.
+const CONTROL_CHARS = new RegExp("[\u0000-\u001F\u007F-\u009F]", "g");
+const sanitise = (s: string) => s.replace(CONTROL_CHARS, " ").trim();
+
+/** Same, but newlines survive — used for the message body only. */
+const CONTROL_EXCEPT_NEWLINE = new RegExp(
+  "[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F-\u009F]",
+  "g"
+);
+const LF = String.fromCharCode(10);
+const sanitiseMultiline = (s: string) =>
+  s
+    .split(new RegExp(String.fromCharCode(13) + LF + "|" + String.fromCharCode(13) + "|" + LF))
+    .join(LF)
+    .replace(CONTROL_EXCEPT_NEWLINE, " ")
+    .trim();
+
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 5;
+
+// A global ceiling as well as a per-IP one. Per-IP alone is worthless against
+// an attacker who can vary their apparent address, and the thing actually
+// worth protecting is the mailbox and the Resend quota — both of which are
+// consumed regardless of which IP a request claims to come from.
+const GLOBAL_WINDOW_MS = 600_000;
+const GLOBAL_MAX_PER_WINDOW = 30;
+let globalCount = 0;
+let globalStart = 0;
+
 const hits = new Map<string, { count: number; start: number }>();
+const MAX_TRACKED_IPS = 5_000;
+
+/** Drop expired buckets so the map cannot grow without bound. */
+function prune(now: number) {
+  for (const [key, entry] of hits) {
+    if (now - entry.start > WINDOW_MS) hits.delete(key);
+  }
+  // Last resort if a flood outpaces expiry within a single window.
+  if (hits.size > MAX_TRACKED_IPS) hits.clear();
+}
 
 function rateLimited(ip: string) {
   const now = Date.now();
+  if (hits.size > 256) prune(now);
+
   const entry = hits.get(ip);
   if (!entry || now - entry.start > WINDOW_MS) {
     hits.set(ip, { count: 1, start: now });
@@ -37,6 +83,43 @@ function rateLimited(ip: string) {
   }
   entry.count += 1;
   return entry.count > MAX_PER_WINDOW;
+}
+
+function globallyRateLimited() {
+  const now = Date.now();
+  if (now - globalStart > GLOBAL_WINDOW_MS) {
+    globalStart = now;
+    globalCount = 1;
+    return false;
+  }
+  globalCount += 1;
+  return globalCount > GLOBAL_MAX_PER_WINDOW;
+}
+
+/**
+ * Best-effort client address.
+ *
+ * `x-forwarded-for` is attacker-controlled: anyone can send one, and taking
+ * its first entry let a single client rotate through unlimited fake
+ * addresses and defeat the per-IP limit entirely. Vercel sets
+ * `x-vercel-forwarded-for` at its edge and overwrites anything the client
+ * supplied, so prefer it; otherwise take the *rightmost* XFF entry, which is
+ * the one appended by the nearest trusted proxy rather than the one the
+ * client invented.
+ */
+function clientIp(req: NextRequest) {
+  const vercel = req.headers.get("x-vercel-forwarded-for");
+  if (vercel) return vercel.split(",")[0]!.trim();
+
+  const real = req.headers.get("x-real-ip");
+  if (real) return real.trim();
+
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) {
+    const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1]!;
+  }
+  return "unknown";
 }
 
 // Reject anything larger than a legitimate enquiry before parsing it.
@@ -76,11 +159,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Request too large." }, { status: 413 });
   }
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (rateLimited(ip)) {
+  if (rateLimited(clientIp(req)) || globallyRateLimited()) {
     return NextResponse.json(
-      { error: "Too many requests. Please try again in a minute." },
+      { error: "Too many requests. Please try again shortly." },
       { status: 429 }
     );
   }
@@ -106,13 +187,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  const clean = (k: string) =>
-    typeof body[k] === "string" ? (body[k] as string).trim() : "";
+  const field = (k: string) =>
+    typeof body[k] === "string" ? (body[k] as string) : "";
+
+  // Header-bound fields are flattened; the message keeps its line breaks
+  // because it goes in the mail *body*, where newlines are meaningful.
+  const clean = (k: string) => sanitise(field(k));
 
   const name = clean("name");
   const email = clean("email");
   const phone = clean("phone");
-  const message = clean("message");
+  const message = sanitiseMultiline(field("message"));
   // The Keep Informed form omits the message field entirely.
   const hasMessageField = "message" in body;
 

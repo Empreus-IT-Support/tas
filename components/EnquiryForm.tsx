@@ -49,19 +49,22 @@ export default function EnquiryForm({
     }
   }
 
+  // Inputs sit on the navy ground like everything else: a lifted navy fill
+  // with a gold hairline, going gold on focus. `color-scheme: dark` is what
+  // makes the browser render the caret, selection and autofill for a dark
+  // field — without it Chrome paints an autofilled input near-white.
   const field =
-    "w-full border border-line bg-white px-4 py-3.5 text-ink outline-none placeholder:text-muted focus:border-red";
+    "w-full border border-line bg-navy-2 px-4 py-3.5 text-white outline-none [color-scheme:dark] placeholder:text-muted hover:border-rule focus:border-gold";
   const label =
-    "mb-2 block font-ui text-[11px] font-bold tracking-[0.18em] text-muted uppercase";
+    "mb-2 block font-ui text-[11px] font-semibold tracking-[0.18em] text-gold uppercase";
 
   if (status === "sent") {
     return (
       <p
         role="status"
-        className="notch border border-lion bg-lion/10 p-7 text-ink"
+        className="gilt bg-gold/10 p-7 text-white"
       >
-        Thank you for contacting Tax, Accounting and Super Centre. We will be in
-        touch soon.
+        Thank you for contacting TASC Mount Isa. We will be in touch soon.
       </p>
     );
   }
@@ -145,7 +148,7 @@ export default function EnquiryForm({
       {status === "error" && (
         <p
           role="alert"
-          className="border-l-2 border-red bg-red/5 px-4 py-3 text-sm font-semibold text-red"
+          className="border-l-2 border-champagne bg-champagne/10 px-4 py-3 text-sm font-semibold text-champagne"
         >
           {error}
         </p>

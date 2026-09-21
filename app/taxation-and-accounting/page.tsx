@@ -1,3 +1,4 @@
+import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
@@ -59,7 +60,7 @@ function TickList({ items }: { items: string[] }) {
     <ul className="mt-7 grid gap-x-8 gap-y-3 sm:grid-cols-2">
       {items.map((item) => (
         <li key={item} className="flex gap-3 border-b border-line pb-3">
-          <span aria-hidden="true" className="mt-0.5 font-bold text-lion-deep">
+          <span aria-hidden="true" className="mt-0.5 font-bold text-gold">
             ✓
           </span>
           <span className="text-[15px]">{item}</span>
@@ -80,7 +81,7 @@ function SectionHeading({
 }) {
   return (
     <div className="flex items-baseline gap-5">
-      <span className="font-display text-2xl text-line">{n}</span>
+      <span className="tnum font-display text-2xl text-gold/70">{n}</span>
       <h2 id={`${id}-heading`} className="text-3xl">
         {children}
       </h2>
@@ -113,7 +114,7 @@ export default function TaxationPage() {
         {/* In-page nav */}
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">
-            <p className="font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <p className="eyebrow">
               On this page
             </p>
             <ul className="mt-5 space-y-1 border-l border-line">
@@ -121,7 +122,7 @@ export default function TaxationPage() {
                 <li key={s.id}>
                   <a
                     href={`#${s.id}`}
-                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-lion hover:text-ink"
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] text-muted hover:border-gold hover:text-white"
                   >
                     {s.label}
                   </a>
@@ -155,7 +156,7 @@ export default function TaxationPage() {
             <Cta />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="remote-lodgement"
@@ -177,7 +178,7 @@ export default function TaxationPage() {
               </p>
             </div>
 
-            <h3 className="mt-10 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <h3 className="eyebrow mt-10">
               What to send us
             </h3>
             <ul className="mt-5 grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-3">
@@ -185,13 +186,13 @@ export default function TaxationPage() {
                 <li key={d.href}>
                   <a
                     href={d.href}
-                    className="group flex h-full flex-col bg-white p-6 hover:bg-paper"
+                    className="group flex h-full flex-col bg-navy-2 p-6 hover:bg-navy-3"
                   >
-                    <span className="flex items-center gap-2 font-ui text-[10px] font-bold tracking-[0.16em] text-red uppercase">
+                    <span className="flex items-center gap-2 font-ui text-[10px] font-semibold tracking-[0.16em] text-gold uppercase">
                       <Download className="h-4 w-4" />
                       PDF
                     </span>
-                    <span className="mt-4 font-display text-[17px] leading-snug text-ink group-hover:text-red">
+                    <span className="mt-4 font-display text-[17px] leading-snug tracking-[0.02em] uppercase group-hover:text-champagne">
                       {d.label}
                     </span>
                     <span className="mt-2 text-sm text-muted">{d.note}</span>
@@ -202,7 +203,7 @@ export default function TaxationPage() {
             <Cta />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="gst-ias-abn"

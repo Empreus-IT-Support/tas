@@ -1,52 +1,72 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens
+   Design tokens — TASC Mount Isa brand guidelines, edition 2026.
+   Source: docs/TASC_Mount_Isa_Brand_Guidelines.docx (§02 Colour, §03 Type).
 
-   Slab-serif display type (Arvo) picks up the heraldic weight of the crest;
-   Open Sans carries body copy; Montserrat handles small uppercase UI labels.
-   All three were already loaded by the original site.
+   Every brand hex below is quoted from §02 verbatim.
 
-   Palette sampled directly from public/images/logo.png (canvas pixel counts):
-   shield #030202 (9701px) · wordmark #d9dedf (6681px) · outline #e00101
-   (2875px) · lion #b8c72c (1739px). The lion is yellow-green, not gold, and
-   the silver wordmark is the mark's second-largest colour — both drive the
-   scheme, which is why the whole site reads cool rather than warm.
-   `lion-deep` is the same hue darkened for light backgrounds, where #b8c72c
-   only reaches 1.9:1 against white.
+   THE SITE IS DARK BY DEFAULT. §02 opens "Navy dominates as the ground", and
+   the logo itself is a reversed mark that "must always sit on the brand navy
+   or an equivalently dark ground". So navy is the page, not a section
+   treatment: `body` is navy, headings are white, body copy is a cool light
+   grey, and paper appears only as a deliberate inset where a block of dense
+   reading earns it (long link lists, the enquiry form).
+
+   That flip also retires the contrast problem the light layout had. Gold on
+   white is 2.28:1 and champagne 1.51:1, so on paper every gold element had to
+   fall back to bronze. On navy, gold is 6.48:1, champagne 10.38:1 and
+   platinum 14.55:1 — the brand's own colours work as drawn, everywhere. Bronze
+   now survives only for the rare paper inset, via `.eyebrow-ink` and
+   `.link-arrow-ink`.
+
+   Measured on navy #0C1B33: body #C3CCDA 9.8:1, muted #94A1B5 5.7:1,
+   white 16.1:1.
+
+   Type (§03): Cinzel SemiBold all-caps for display, Montserrat for body, UI
+   and the tagline. Office fallbacks are Georgia and Arial, exactly as the
+   guide prescribes, so a machine without the webfonts still reads correctly.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-ink: #030202;
-  --color-ink-2: #0d0f0f;
-  --color-ink-3: #1a1d1d;
-  --color-red: #e00101;
-  --color-red-dark: #ac0000;
-  --color-lion: #b8c72c;
-  --color-lion-deep: #67711a;
-  --color-silver: #d9dedf;
-  --color-paper: #f6f8f8;
-  --color-line: #dde1e2;
-  --color-body: #454b4c;
-  /* #7c8384 read nicer but only reached 3.86:1 on white, and every use of
-     `muted` is small text on a light surface. */
-  --color-muted: #6d7475;
+  --color-navy: #0c1b33;
+  --color-midnight: #050b1a;
+  /* Lifted navies for panels and rows that must read off the page ground. */
+  --color-navy-2: #12294a;
+  --color-navy-3: #17325a;
+  --color-gold: #d7a245;
+  --color-champagne: #fbcd68;
+  --color-bronze: #9b501d;
+  --color-platinum: #ededed;
 
-  --font-display: var(--font-arvo), Georgia, serif;
-  --font-body: var(--font-open-sans), Arial, Helvetica, sans-serif;
+  /* Paper, for the rare light inset. */
+  --color-paper: #f4f6f9;
+
+  /* Hairlines. `line` is the structural rule on navy; `rule` is the gold one
+     that carries the brand. Both are opaque so they survive on any ground. */
+  --color-line: #1d3153;
+  --color-rule: #6c5426;
+
+  --color-body: #c3ccda;
+  --color-muted: #94a1b5;
+
+  --font-display: var(--font-cinzel), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-montserrat), Arial, Helvetica, sans-serif;
   --font-ui: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 /* Element defaults MUST live in `@layer base`. Unlayered CSS outranks every
    layer, so an unlayered `h1 { color: ... }` beat Tailwind's `utilities`
-   layer and made `text-white` headings render ink-on-ink — invisible on
-   every dark masthead. */
+   layer and made `text-white` headings render invisible on dark mastheads. */
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* The page ground, so overscroll and the area under a short page stay
+       navy rather than flashing white. */
+    background-color: var(--color-navy);
   }
 
   body {
-    background-color: #fff;
+    background-color: var(--color-navy);
     color: var(--color-body);
     font-family: var(--font-body);
     font-size: 17px;
@@ -55,89 +75,252 @@
   }
 
   ::selection {
-    background-color: var(--color-lion);
-    color: var(--color-ink);
+    background-color: var(--color-gold);
+    color: var(--color-navy);
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-lion);
+    outline: 3px solid var(--color-gold);
     outline-offset: 3px;
   }
 
+  /* Cinzel is an inscriptional face: it has no true lowercase, its minuscules
+     render as small capitals. So h1/h2 are set in caps deliberately — that is
+     the face working as designed, and it matches the wordmark. Tracking is
+     positive, not negative: caps need air, and the guide asks for generous
+     spacing throughout. */
   h1,
-  h2,
+  h2 {
+    font-family: var(--font-display);
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.16;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  /* h3/h4 stay in Montserrat. Long sub-headings in all-caps Cinzel stop being
+     readable at body size, and §03 scopes Cinzel to "Display / Headings". */
   h3,
   h4 {
-    font-family: var(--font-display);
-    color: var(--color-ink);
-    font-weight: 700;
-    line-height: 1.12;
-    letter-spacing: -0.015em;
+    font-family: var(--font-body);
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
     text-wrap: balance;
   }
 
   h1 {
-    font-size: clamp(1.875rem, 4.2vw, 3.25rem);
+    font-size: clamp(1.75rem, 4.4vw, 3.5rem);
   }
 
   h2 {
-    font-size: clamp(1.5rem, 2.7vw, 2.125rem);
+    font-size: clamp(1.375rem, 2.6vw, 2.125rem);
   }
 
   h3 {
-    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
-    letter-spacing: -0.005em;
+    font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  }
+
+  /* Inside a paper inset everything flips back. One rule rather than a
+     `text-navy` on every element, so an inset can never half-convert. */
+  .on-paper {
+    color: #414a59;
+  }
+
+  .on-paper h1,
+  .on-paper h2,
+  .on-paper h3,
+  .on-paper h4 {
+    color: var(--color-navy);
   }
 }
 
 /* Components sit in their own layer so utilities can still override them. */
 @layer components {
 
-/* --- Eyebrow: small caps label with a lion-coloured tick ---------------- */
+/* --- Eyebrow: tracked capitals with a gold tick -------------------------
+   §03 "Fine print / Labels — Montserrat Medium, tracked". Gold by default,
+   because the default ground is navy; `.eyebrow-ink` is the paper variant.
+------------------------------------------------------------------------- */
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-ui);
   font-size: 0.6875rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--color-lion-deep);
+  color: var(--color-gold);
 }
 
 .eyebrow::before {
   content: "";
   width: 1.75rem;
-  height: 2px;
+  height: 1px;
   background: currentColor;
 }
 
+/* Retained so existing markup keeps working; identical to `.eyebrow` now
+   that the whole site is the dark ground it was written for. */
 .eyebrow-light {
-  color: var(--color-lion);
+  color: var(--color-gold);
+}
+
+.eyebrow-ink {
+  color: var(--color-bronze);
 }
 
 .eyebrow-center {
   justify-content: center;
 }
 
-/* --- Ledger rule: the double hairline of a ruled accounts book ---------- */
-.ledger-rule {
-  border-top: 1px solid var(--color-line);
-  border-bottom: 3px double var(--color-line);
-  height: 4px;
+/* --- Diamond rule ------------------------------------------------------
+   The signature device of the lockup: a hairline broken by a small gold
+   lozenge. Lifted straight off the mark, where it separates the emblem from
+   the wordmark and the wordmark from the tagline. Used as a section divider.
+------------------------------------------------------------------------- */
+.diamond-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  color: var(--color-gold);
 }
 
-/* --- Shield notch: clips the top corners like the crest ----------------- */
-.notch {
-  clip-path: polygon(
-    0 0.75rem,
-    0.75rem 0,
-    calc(100% - 0.75rem) 0,
-    100% 0.75rem,
-    100% 100%,
-    0 100%
+.diamond-rule::before,
+.diamond-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.diamond-rule > span {
+  display: block;
+}
+
+/* The lozenge itself — a square on its point, as drawn in the mark. */
+.diamond-rule-dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  rotate: 45deg;
+  background: currentColor;
+}
+
+/* --- Gilt frame ---------------------------------------------------------
+   The double gold border of the guidelines cover. `.gilt` frames a panel;
+   `.gilt-page` runs the same treatment at section scale, inset from the
+   viewport edge, which is the structural motif of the dark layout — sections
+   are divided by frames and hairlines rather than by changing the background.
+------------------------------------------------------------------------- */
+.gilt {
+  position: relative;
+  border: 1px solid rgba(215, 162, 69, 0.38);
+}
+
+.gilt::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(215, 162, 69, 0.18);
+  pointer-events: none;
+}
+
+/* The same treatment at section scale, rendered by components/PageFrame.tsx.
+   It is a real element, not a pseudo-element on the section: `.texture` and
+   `.vignette` already claim the section's `::before` and `::after`, and a
+   second class reaching for the same pseudo-element silently loses. That is
+   exactly what happened the first time this was written as `.gilt-page`. */
+.page-frame {
+  position: absolute;
+  inset: 1.25rem;
+  border: 1px solid rgba(215, 162, 69, 0.3);
+  pointer-events: none;
+}
+
+.page-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(215, 162, 69, 0.12);
+}
+
+@media (max-width: 640px) {
+  .page-frame {
+    inset: 0.625rem;
+  }
+
+  .page-frame::before {
+    inset: 4px;
+  }
+}
+
+/* --- Mark fade ----------------------------------------------------------
+   The supplied lockups are flat #0C1B33 chips with transparent rounded
+   corners. On a plain navy surface they are invisible, which is the point —
+   but any wash, vignette or gradient behind one lifts the surrounding navy
+   and the chip's rectangle appears. Chasing that by keeping every background
+   flat behind the mark constrains the layout badly, and it broke again at
+   mobile widths where the decorative washes span the whole viewport.
+
+   So the chip's own edges are dissolved instead. Measured from the artwork:
+   content sits 5.9% from the left, 5.7% from the right, 15.2% from the top
+   and 19.3% from the bottom, so fading the outer 5% horizontally and 12%
+   vertically never touches the mark — only the empty navy margin around it.
+   That is a fade, not a recolour, and the guide permits fading (the emblem
+   watermark relies on it).
+
+   `mask-composite: intersect` is what makes the two axes combine into an
+   inset frame rather than a union. Where it is unsupported the mask simply
+   does not apply and the chip edge returns — the old behaviour, not a break.
+------------------------------------------------------------------------- */
+.mark-fade {
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* --- Panel --------------------------------------------------------------
+   A lifted navy surface with a gold hairline. The workhorse container now
+   that there is no light background to sit things on.
+------------------------------------------------------------------------- */
+.panel {
+  background: var(--color-navy-2);
+  border: 1px solid rgba(215, 162, 69, 0.22);
+}
+
+/* --- Metallic type ------------------------------------------------------
+   The wordmark's gold is a gradient, not a flat fill. This gives display type
+   the same sheen. Falls back to flat gold anywhere the clip is unsupported,
+   because `color` is set before the clip is applied.
+------------------------------------------------------------------------- */
+.gilt-text {
+  color: var(--color-gold);
+  background-image: linear-gradient(
+    175deg,
+    var(--color-champagne) 8%,
+    var(--color-gold) 48%,
+    #b9832f 78%,
+    var(--color-champagne) 100%
   );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Safari paints nothing for transparent text inside a running animation on
+   some builds; the reveal transition is opacity-only so this is safe, but
+   keep the fallback colour visible under forced-colors. */
+@media (forced-colors: active) {
+  .gilt-text {
+    -webkit-text-fill-color: currentColor;
+  }
 }
 
 /* --- Buttons ------------------------------------------------------------ */
@@ -154,35 +337,55 @@
   border: 1px solid transparent;
 }
 
+/* Gold fill, navy type — 6.48:1, and the only way gold reads as the brand's
+   gold rather than as a warning colour. */
 .btn-primary {
-  background: var(--color-red);
-  color: #fff;
+  background: linear-gradient(
+    170deg,
+    var(--color-champagne),
+    var(--color-gold) 62%
+  );
+  color: var(--color-navy);
 }
 
 .btn-primary:hover {
-  background: var(--color-red-dark);
+  background: var(--color-champagne);
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px -12px rgba(224, 1, 1, 0.7);
+  box-shadow: 0 12px 24px -12px rgba(215, 162, 69, 0.85);
 }
 
-.btn-lion {
-  background: var(--color-lion);
-  color: var(--color-ink);
+/* Solid gold, used where the section already carries a gradient. */
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-navy);
 }
 
-.btn-lion:hover {
-  background: #fff;
+.btn-gold:hover {
+  background: var(--color-champagne);
   transform: translateY(-2px);
+}
+
+/* Navy fill, for the rare paper inset where a gold button loses its ground. */
+.btn-navy {
+  background: var(--color-navy);
+  color: #fff;
+}
+
+.btn-navy:hover {
+  background: var(--color-midnight);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -12px rgba(12, 27, 51, 0.8);
 }
 
 .btn-ghost {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(215, 162, 69, 0.45);
   color: #fff;
 }
 
 .btn-ghost:hover {
-  border-color: var(--color-lion);
-  color: var(--color-lion);
+  border-color: var(--color-gold);
+  color: var(--color-champagne);
+  background: rgba(215, 162, 69, 0.07);
 }
 
 /* --- Arrow link --------------------------------------------------------- */
@@ -192,10 +395,14 @@
   gap: 0.5rem;
   font-family: var(--font-ui);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-red);
+  color: var(--color-gold);
+}
+
+.link-arrow-ink {
+  color: var(--color-bronze);
 }
 
 .link-arrow svg {
@@ -217,8 +424,8 @@
   left: 0;
   bottom: -0.4rem;
   width: 100%;
-  height: 2px;
-  background: var(--color-lion);
+  height: 1px;
+  background: var(--color-gold);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -229,38 +436,109 @@
   transform: scaleX(1);
 }
 
-/* --- Halftone texture ---------------------------------------------------
-   Generated from the lion colour rather than the archived pattern.jpg, which
-   is warm orange and fought the cool palette the logo actually calls for.
-   Costs no request and tints correctly by definition.
+/* --- Ledger row ---------------------------------------------------------
+   The service list. Rows divided by gold hairlines, the whole row lifting to
+   navy-2 on hover with the gold rule sweeping in beneath. Replaces the light
+   layout's "paper sweeps in from the left", which needed a white background
+   to sweep to.
+------------------------------------------------------------------------- */
+.ledger-row {
+  position: relative;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.ledger-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(215, 162, 69, 0.09),
+    rgba(215, 162, 69, 0)
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.ledger-row::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ledger-row:hover::before {
+  opacity: 1;
+}
+
+.ledger-row:hover::after {
+  transform: scaleX(1);
+}
+
+/* --- Texture ------------------------------------------------------------
+   A fine gold grid rather than halftone dots. The guidelines are an engraved,
+   inscriptional system — hairlines and frames, not print screens — so the
+   grain is ruled, very faint, and gold rather than neutral.
 ------------------------------------------------------------------------- */
 .texture::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-    var(--color-lion) 0.8px,
-    transparent 0.9px
-  );
-  background-size: 13px 13px;
-  opacity: 0.055;
+  background-image:
+    linear-gradient(to right, var(--color-gold) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-gold) 1px, transparent 1px);
+  background-size: 46px 46px;
+  opacity: 0.035;
   pointer-events: none;
 }
 
 /* --- Ruled: faint horizontal lines, like a page of an accounts ledger ---
-   Pairs with .texture on dark sections. The rhythm (34px) is deliberately
-   off the type grid so it reads as paper rather than as a baseline guide.
+   The rhythm (34px) is deliberately off the type grid so it reads as paper
+   rather than as a baseline guide.
 ------------------------------------------------------------------------- */
 .ruled::after {
   content: "";
   position: absolute;
   inset: 0;
+  /* Behind the content, above the section's own background. `::after` is the
+     last child, so without this it paints OVER everything in the section. The
+     parent carries `isolate`, which keeps the negative index from escaping. */
+  z-index: -1;
   background-image: repeating-linear-gradient(
     to bottom,
-    rgba(217, 222, 223, 0.055) 0 1px,
+    rgba(237, 237, 237, 0.05) 0 1px,
     transparent 1px 34px
   );
   mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  pointer-events: none;
+}
+
+/* --- Vignette -----------------------------------------------------------
+   Large navy fields go flat without one. Darkens the edges towards midnight
+   so a full-height section reads as a lit surface rather than a fill.
+
+   Two constraints shape the numbers. It must sit BEHIND the content — see the
+   z-index note on `.ruled` — and it must not lighten the middle, because the
+   supplied lockups are flat `#0C1B33` chips and any lift behind one turns its
+   transparent-cornered rectangle into a visible plate. So the light is a
+   whisper and the work is all in the darkened edges.
+------------------------------------------------------------------------- */
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    125% 95% at 50% 42%,
+    rgba(5, 11, 26, 0) 46%,
+    rgba(5, 11, 26, 0.62) 100%
+  );
   pointer-events: none;
 }
 

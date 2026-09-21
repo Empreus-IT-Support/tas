@@ -1,14 +1,26 @@
 import { ImageResponse } from "next/og";
-import { BUSINESS, SITE_NAME } from "@/lib/site";
+import { BRAND, BUSINESS, SITE_NAME, TAGLINE } from "@/lib/site";
 
 export const runtime = "nodejs";
-export const alt = `${SITE_NAME} — registered tax agent and public accountant in Mount Isa`;
+export const alt = `${SITE_NAME} — ${TAGLINE}, Mount Isa`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Built from the logo-sampled palette. No remote fonts or images, so this
-// renders identically wherever it is generated.
+/**
+ * Share card, drawn from the brand palette in lib/site.ts.
+ *
+ * No remote fonts or images, so it renders identically wherever it is
+ * generated. Note Satori rejects `radial-gradient` and only handles a subset
+ * of layout, so the guidelines' double gold frame is drawn as four plain
+ * divs rather than borders with insets — same result, no unsupported CSS.
+ */
 export default async function Image() {
+  const frame = {
+    position: "absolute" as const,
+    background: BRAND.gold,
+    display: "flex",
+  };
+
   return new ImageResponse(
     (
       <div
@@ -18,70 +30,81 @@ export default async function Image() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#030202",
-          padding: "72px 80px",
+          background: BRAND.navy,
+          padding: "84px 92px",
         }}
       >
-        {/* Crest stripe. Satori rejects radial-gradient here ("unsupported
-            image format"), so the accent is flat geometry instead. */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: 14,
-            height: "100%",
-            background: "#e00101",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 14,
-            width: 6,
-            height: "100%",
-            background: "#b8c72c",
-            display: "flex",
-          }}
-        />
+        {/* Outer gold hairline frame — the cover treatment of the guidelines. */}
+        <div style={{ ...frame, top: 28, left: 28, right: 28, height: 2 }} />
+        <div style={{ ...frame, bottom: 28, left: 28, right: 28, height: 2 }} />
+        <div style={{ ...frame, top: 28, left: 28, bottom: 28, width: 2 }} />
+        <div style={{ ...frame, top: 28, right: 28, bottom: 28, width: 2 }} />
+
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: 18,
-              color: "#b8c72c",
-              fontSize: 22,
-              letterSpacing: 6,
+              color: BRAND.gold,
+              fontSize: 21,
+              letterSpacing: 7,
               textTransform: "uppercase",
-              fontWeight: 700,
+              fontWeight: 600,
             }}
           >
-            <div style={{ width: 56, height: 3, background: "#b8c72c", display: "flex" }} />
+            <div
+              style={{ width: 56, height: 1, background: BRAND.gold, display: "flex" }}
+            />
             Mount Isa, Queensland
           </div>
           <div
             style={{
-              marginTop: 30,
-              fontSize: 76,
-              lineHeight: 1.08,
+              marginTop: 32,
+              fontSize: 72,
+              lineHeight: 1.1,
               color: "#ffffff",
               display: "flex",
               flexDirection: "column",
             }}
           >
             <span>Maximise your returns.</span>
-            <span style={{ color: "#b8c72c" }}>Minimise your tax.</span>
+            <span style={{ color: BRAND.champagne }}>Minimise your tax.</span>
           </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ height: 1, background: "rgba(217,222,223,0.22)", display: "flex" }} />
+          {/* The diamond rule from the lockup. */}
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div
+              style={{
+                flex: 1,
+                height: 1,
+                background: "rgba(215,162,69,0.5)",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                width: 9,
+                height: 9,
+                background: BRAND.gold,
+                transform: "rotate(45deg)",
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                flex: 1,
+                height: 1,
+                background: "rgba(215,162,69,0.5)",
+                display: "flex",
+              }}
+            />
+          </div>
           <div
             style={{
-              marginTop: 26,
+              marginTop: 28,
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "space-between",
@@ -91,23 +114,39 @@ export default async function Image() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                color: "#d9dedf",
-                fontSize: 26,
+                color: BRAND.platinum,
+                fontSize: 24,
               }}
             >
-              <span style={{ color: "#ffffff", fontSize: 30, fontWeight: 700 }}>
+              <span
+                style={{
+                  color: "#ffffff",
+                  fontSize: 34,
+                  fontWeight: 700,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                }}
+              >
                 {SITE_NAME}
               </span>
-              <span style={{ marginTop: 8 }}>
-                Registered tax agent &amp; public accountant
+              <span
+                style={{
+                  marginTop: 10,
+                  color: BRAND.gold,
+                  letterSpacing: 4,
+                  textTransform: "uppercase",
+                  fontSize: 20,
+                }}
+              >
+                {TAGLINE}
               </span>
             </div>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                background: "#e00101",
-                color: "#ffffff",
+                background: BRAND.gold,
+                color: BRAND.navy,
                 fontWeight: 700,
                 fontSize: 26,
                 padding: "16px 28px",

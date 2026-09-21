@@ -1,3 +1,4 @@
+import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
 import EnquiryForm from "@/components/EnquiryForm";
 import PageBanner from "@/components/PageBanner";
@@ -5,7 +6,7 @@ import PageBanner from "@/components/PageBanner";
 export const metadata: Metadata = {
   title: "Keep Informed",
   description:
-    "Sign up for tax tips, tax-related information and promotions from Tax, Accounting and Super Centre in Mount Isa.",
+    "Sign up for tax tips, tax-related information and promotions from TASC Mount Isa.",
   alternates: { canonical: "/keep-informed" },
 };
 
@@ -31,19 +32,19 @@ export default function KeepInformedPage() {
         path="/keep-informed"
         eyebrow="Keep Informed"
         title="A step ahead of the game"
-        intro="Enter your details to receive regular information updates from Tax, Accounting and Super Centre."
+        intro="Enter your details to receive regular information updates from TASC Mount Isa."
       />
 
       <div className="mx-auto grid max-w-7xl gap-14 px-5 py-14 sm:py-18 lg:grid-cols-12">
         <section className="lg:col-span-7">
           <p className="eyebrow">What you&rsquo;ll receive</p>
           <h2 className="mt-5">Worth opening</h2>
-          <div className="ledger-rule mt-8 max-w-[9rem]" />
+          <DiamondRule className="mt-8" />
 
           <ul className="mt-10 space-y-px overflow-hidden border border-line bg-line">
             {PROMISES.map((p, i) => (
-              <li key={p.title} className="flex gap-6 bg-white p-7">
-                <span className="font-display text-2xl text-line">
+              <li key={p.title} className="flex gap-6 bg-navy-2 p-7">
+                <span className="tnum font-display text-2xl text-gold/70">
                   0{i + 1}
                 </span>
                 <div>
@@ -56,11 +57,7 @@ export default function KeepInformedPage() {
         </section>
 
         <aside className="lg:col-span-5">
-          <div className="notch relative border border-line bg-paper p-9">
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-lion to-red"
-            />
+          <div className="gilt relative bg-navy-2 p-9 lg:sticky lg:top-32">
             <p className="eyebrow">Info request</p>
             <h2 className="mt-4 text-2xl">Sign up</h2>
             <p className="mt-3 text-sm text-muted">

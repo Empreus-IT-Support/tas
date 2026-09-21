@@ -1,3 +1,4 @@
+import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
 import PageBanner from "@/components/PageBanner";
 import { Download, ExternalLink } from "@/components/icons";
@@ -5,7 +6,7 @@ import { Download, ExternalLink } from "@/components/icons";
 export const metadata: Metadata = {
   title: "Tax Resources",
   description:
-    "Fact sheets, ATO calculators, checklists and downloadable forms from Tax, Accounting and Super Centre in Mount Isa.",
+    "Fact sheets, ATO calculators, checklists and downloadable forms from TASC Mount Isa.",
   alternates: { canonical: "/tax-resources" },
 };
 
@@ -91,10 +92,10 @@ function LinkList({ items }: { items: { label: string; href: string }[] }) {
             href={i.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center justify-between gap-4 py-3.5 text-[15px] hover:text-red"
+            className="group flex items-center justify-between gap-4 py-3.5 text-[15px] hover:text-champagne"
           >
             <span>{i.label}</span>
-            <ExternalLink className="shrink-0 text-line group-hover:text-red" />
+            <ExternalLink className="shrink-0 text-line group-hover:text-champagne" />
           </a>
         </li>
       ))}
@@ -113,13 +114,13 @@ function DownloadGrid({
         <li key={i.label}>
           <a
             href={i.href}
-            className="group flex h-full items-start gap-4 bg-white p-6 hover:bg-paper"
+            className="group flex h-full items-start gap-4 bg-navy-2 p-6 hover:bg-navy-3"
           >
-            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-ink font-ui text-[10px] font-bold text-lion">
+            <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center border border-gold/40 font-ui text-[10px] font-semibold text-gold">
               {i.type}
             </span>
             <span className="flex-1">
-              <span className="block font-display text-[16px] leading-snug text-ink group-hover:text-red">
+              <span className="block font-display text-[16px] leading-snug tracking-[0.02em] uppercase group-hover:text-champagne">
                 {i.label}
               </span>
               <span className="mt-2 flex items-center gap-1.5 font-ui text-[10px] font-bold tracking-[0.16em] text-muted uppercase">
@@ -155,7 +156,7 @@ export default function ResourcesPage() {
       <div className="mx-auto max-w-7xl gap-16 px-5 py-14 sm:py-18 lg:grid lg:grid-cols-12">
         <aside className="mb-14 lg:col-span-3 lg:mb-0">
           <nav aria-label="On this page" className="lg:sticky lg:top-36">
-            <p className="font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <p className="eyebrow">
               On this page
             </p>
             <ul className="mt-5 space-y-1 border-l border-line">
@@ -163,7 +164,7 @@ export default function ResourcesPage() {
                 <li key={s.id}>
                   <a
                     href={`#${s.id}`}
-                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] hover:border-lion hover:text-ink"
+                    className="-ml-px block border-l-2 border-transparent py-2 pl-5 text-[15px] text-muted hover:border-gold hover:text-white"
                   >
                     {s.label}
                   </a>
@@ -184,23 +185,23 @@ export default function ResourcesPage() {
               <Heading id="fact-sheets">Fact Sheets</Heading>
             </div>
 
-            <h3 className="mt-10 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <h3 className="eyebrow mt-10">
               Deductions you can claim
             </h3>
             <LinkList items={DEDUCTIONS} />
 
-            <h3 className="mt-12 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <h3 className="eyebrow mt-12">
               Records you need to keep
             </h3>
             <LinkList items={RECORDS} />
 
-            <h3 className="mt-12 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
+            <h3 className="eyebrow mt-12">
               Offsets you can claim
             </h3>
             <LinkList items={OFFSETS} />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="calculators"
@@ -211,7 +212,7 @@ export default function ResourcesPage() {
             <LinkList items={CALCULATORS} />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="checklists"
@@ -222,7 +223,7 @@ export default function ResourcesPage() {
             <DownloadGrid items={CHECKLISTS} />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="forms"
@@ -233,7 +234,7 @@ export default function ResourcesPage() {
             <DownloadGrid items={FORMS} />
           </section>
 
-          <div className="ledger-rule my-16" />
+          <DiamondRule className="my-16" width="full" />
 
           <section
             id="useful-links"

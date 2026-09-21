@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { SITE_NAME } from "@/lib/site";
 
 /**
- * Branded first-paint screen showing the official TASC crest.
+ * Branded first-paint screen showing the stacked lockup.
  *
  * Two safeguards matter here. The overlay is server-rendered, so if
  * hydration never happened it would cover the site permanently — the CSS
@@ -56,18 +56,18 @@ export default function Preloader() {
   return (
     <div
       aria-hidden="true"
-      className="preloader texture fixed inset-0 z-100 flex flex-col items-center justify-center bg-ink"
+      className="preloader fixed inset-0 z-100 flex flex-col items-center justify-center bg-navy"
     >
       <Image
-        src="/images/logo.png"
+        src="/brand/lockup-stacked.png"
         alt={SITE_NAME}
-        width={721}
-        height={200}
+        width={1429}
+        height={1011}
         priority
-        className="preloader-crest h-14 w-auto sm:h-20"
+        className="preloader-crest mark-fade h-28 w-auto sm:h-40"
       />
       <span className="mt-9 block h-px w-44 overflow-hidden bg-white/12">
-        <span className="preloader-bar block h-full w-full origin-left bg-gradient-to-r from-red via-lion to-red" />
+        <span className="preloader-bar block h-full w-full origin-left bg-gradient-to-r from-bronze via-champagne to-bronze" />
       </span>
     </div>
   );

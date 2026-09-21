@@ -1,13 +1,14 @@
+import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
 import EnquiryForm from "@/components/EnquiryForm";
 import PageBanner from "@/components/PageBanner";
 import { BUSINESS } from "@/lib/site";
-import { ArrowRight, Clock, Mail, Phone, Pin } from "@/components/icons";
+import { ArrowRight, Clock, Mail, Phone, Pin, Post } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Contact Tax, Accounting and Super Centre in Mount Isa — 26 East Street, Turanga Shopping Centre. Phone 07 4743 6342 or send an enquiry.",
+    "Contact TASC Mount Isa — 26 East Street, Turanga Shopping Centre. Phone 07 4743 6342 or send an enquiry.",
   alternates: { canonical: "/contact-us" },
 };
 
@@ -28,7 +29,7 @@ export default function ContactPage() {
         <section className="lg:col-span-7">
           <p className="eyebrow">Send us a message</p>
           <h2 className="mt-5">We&rsquo;ll be in touch</h2>
-          <div className="ledger-rule mt-8 max-w-[9rem]" />
+          <DiamondRule className="mt-8" />
           <div className="mt-10">
             <EnquiryForm />
           </div>
@@ -36,11 +37,7 @@ export default function ContactPage() {
 
         {/* ------------------------------------------------------------ Info */}
         <aside className="lg:col-span-5">
-          <div className="notch relative overflow-hidden bg-ink p-9 text-white/70">
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-red via-lion to-red"
-            />
+          <div className="gilt relative overflow-hidden bg-navy p-9 text-white/70">
             <p className="eyebrow eyebrow-light">Mount Isa QLD</p>
 
             <address className="mt-7 space-y-5 text-[15px] not-italic">
@@ -50,7 +47,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="flex gap-3.5 hover:text-white"
               >
-                <Pin className="mt-1 shrink-0 text-lion" />
+                <Pin className="mt-1 shrink-0 text-gold" />
                 <span>
                   {address.line1}
                   <br />
@@ -61,18 +58,29 @@ export default function ContactPage() {
               </a>
               <a
                 href={`tel:${BUSINESS.phoneHref}`}
-                className="flex items-center gap-3.5 font-display text-xl text-white hover:text-lion"
+                className="flex items-center gap-3.5 font-display text-xl text-white hover:text-gold"
               >
-                <Phone className="shrink-0 text-lion" />
+                <Phone className="shrink-0 text-gold" />
                 <span className="tnum">{BUSINESS.phone}</span>
               </a>
               <a
                 href={`mailto:${BUSINESS.email}`}
                 className="flex items-center gap-3.5 hover:text-white"
               >
-                <Mail className="shrink-0 text-lion" />
+                <Mail className="shrink-0 text-gold" />
                 {BUSINESS.email}
               </a>
+              {/* Mail goes to the Gold Coast, not the Mount Isa shopfront —
+                  brand guidelines §05. Worth stating plainly so nothing is
+                  posted to the shop. */}
+              <p className="flex gap-3.5 text-[15px] text-platinum/55">
+                <Post className="mt-1 shrink-0 text-gold" />
+                <span>
+                  Postal
+                  <br />
+                  {BUSINESS.postal}
+                </span>
+              </p>
             </address>
 
             <p className="mt-8">
@@ -80,7 +88,7 @@ export default function ContactPage() {
                 href={BUSINESS.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-arrow text-lion"
+                className="link-arrow text-gold"
               >
                 View on map
                 <ArrowRight />
@@ -88,9 +96,9 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="mt-8 border border-line p-9">
-            <p className="flex items-center gap-3 font-ui text-[11px] font-bold tracking-[0.24em] text-muted uppercase">
-              <Clock className="text-lion-deep" />
+          <div className="panel mt-8 p-9">
+            <p className="eyebrow">
+              <Clock className="text-gold" />
               Opening hours
             </p>
             <dl className="mt-6">
@@ -100,7 +108,7 @@ export default function ContactPage() {
                   className="flex justify-between gap-4 border-b border-line py-3 text-[15px]"
                 >
                   <dt>{h.days}</dt>
-                  <dd className="text-right font-semibold text-ink">
+                  <dd className="text-right font-semibold text-white">
                     {h.time}
                   </dd>
                 </div>

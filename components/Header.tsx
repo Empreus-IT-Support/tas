@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BUSINESS, NAV, SITE_NAME } from "@/lib/site";
+import { BUSINESS, NAV, SITE_NAME, TAGLINE } from "@/lib/site";
 import { ArrowRight, Mail, Phone } from "./icons";
 
 export default function Header() {
@@ -44,20 +44,22 @@ export default function Header() {
     <header className="sticky top-0 z-50">
       {/* --- Utility strip: collapses on scroll ---------------------------- */}
       <div
-        className={`hidden overflow-hidden bg-black transition-[height] duration-300 lg:block ${
+        className={`hidden overflow-hidden bg-midnight transition-[height] duration-300 lg:block ${
           scrolled ? "h-0" : "h-9"
         }`}
       >
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-6 px-5">
-          <p className="font-ui text-[10px] font-bold tracking-[0.26em] text-lion uppercase">
-            Registered Tax Agent &amp; Public Accountant
+          {/* The tagline as a standalone descriptor, per the brand
+              guidelines §04. Never abbreviated. */}
+          <p className="font-ui text-[10px] font-semibold tracking-[0.26em] text-gold uppercase">
+            {TAGLINE}
           </p>
           <div className="flex items-center gap-6 text-[13px] text-white/55">
             <a
               href={`tel:${BUSINESS.phoneHref}`}
               className="flex items-center gap-2 hover:text-white"
             >
-              <Phone className="h-4 w-4 text-lion" />
+              <Phone className="h-4 w-4 text-gold" />
               <span className="font-semibold text-white/85">
                 <span className="tnum">{BUSINESS.phone}</span>
               </span>
@@ -67,7 +69,7 @@ export default function Header() {
               href={`mailto:${BUSINESS.email}`}
               className="flex items-center gap-2 hover:text-white"
             >
-              <Mail className="h-4 w-4 text-lion" />
+              <Mail className="h-4 w-4 text-gold" />
               {BUSINESS.email}
             </a>
           </div>
@@ -76,7 +78,7 @@ export default function Header() {
 
       {/* --- Main bar ----------------------------------------------------- */}
       <div
-        className={`relative bg-ink/95 backdrop-blur-md transition-shadow ${
+        className={`relative bg-navy transition-shadow ${
           scrolled ? "shadow-[0_10px_30px_-18px_rgba(0,0,0,0.9)]" : ""
         }`}
       >
@@ -87,12 +89,12 @@ export default function Header() {
             className="shrink-0"
           >
             <Image
-              src="/images/logo.png"
+              src="/brand/lockup-horizontal.png"
               alt={SITE_NAME}
-              width={721}
-              height={200}
+              width={2344}
+              height={610}
               priority
-              className="h-10 w-auto sm:h-11"
+              className="h-9 w-auto sm:h-10"
             />
           </Link>
 
@@ -107,7 +109,7 @@ export default function Header() {
                     title={item.label}
                     className={`nav-link block font-ui text-[11px] font-bold tracking-[0.16em] whitespace-nowrap uppercase ${
                       isActive(item.href)
-                        ? "text-lion"
+                        ? "text-gold"
                         : "text-white/80 hover:text-white"
                     }`}
                   >
@@ -120,7 +122,7 @@ export default function Header() {
 
           <Link
             href="/contact-us"
-            className="ml-auto hidden shrink-0 items-center gap-2 bg-red px-5 py-3 font-ui text-[11px] font-bold tracking-[0.14em] whitespace-nowrap text-white uppercase hover:bg-red-dark lg:ml-6 lg:inline-flex"
+            className="ml-auto hidden shrink-0 items-center gap-2 bg-gold px-5 py-3 font-ui text-[11px] font-semibold tracking-[0.14em] whitespace-nowrap text-navy uppercase hover:bg-champagne lg:ml-6 lg:inline-flex"
           >
             Book appointment
             <ArrowRight className="h-3.5 w-3.5" />
@@ -131,7 +133,7 @@ export default function Header() {
             onClick={() => setOpen(true)}
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="ml-auto p-2 text-white hover:text-lion lg:hidden"
+            className="ml-auto p-2 text-white hover:text-gold lg:hidden"
           >
             <span className="sr-only">Open menu</span>
             <svg
@@ -153,7 +155,7 @@ export default function Header() {
 
         <div
           aria-hidden="true"
-          className="h-px bg-gradient-to-r from-transparent via-lion/45 to-transparent"
+          className="h-px bg-gradient-to-r from-transparent via-gold/55 to-transparent"
         />
       </div>
 
@@ -169,21 +171,21 @@ export default function Header() {
               <span className="sr-only">Close menu</span>
             </button>
 
-            <div className="drawer-panel texture absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col overflow-y-auto bg-ink">
+            <div className="drawer-panel texture absolute inset-y-0 right-0 flex w-[min(22rem,88vw)] flex-col overflow-y-auto bg-navy">
               <div className="relative flex items-center justify-between border-b border-white/10 px-6 py-5">
                 <Image
-                  src="/images/logo.png"
+                  src="/brand/lockup-horizontal.png"
                   alt=""
-                  width={721}
-                  height={200}
+                  width={2344}
+                  height={610}
                   aria-hidden="true"
-                  className="h-9 w-auto"
+                  className="h-8 w-auto"
                 />
                 <button
                   type="button"
                   autoFocus
                   onClick={() => setOpen(false)}
-                  className="p-2 text-white hover:text-lion"
+                  className="p-2 text-white hover:text-gold"
                 >
                   <span className="sr-only">Close menu</span>
                   <svg
@@ -215,8 +217,8 @@ export default function Header() {
                           0{i + 1}
                         </span>
                         <span
-                          className={`font-display text-xl group-hover:text-lion ${
-                            isActive(item.href) ? "text-lion" : "text-white"
+                          className={`font-display text-xl group-hover:text-gold ${
+                            isActive(item.href) ? "text-gold" : "text-white"
                           }`}
                         >
                           {item.label}
@@ -230,7 +232,7 @@ export default function Header() {
               <div className="relative space-y-3 border-t border-white/10 px-6 py-6">
                 <a
                   href={`tel:${BUSINESS.phoneHref}`}
-                  className="btn btn-lion w-full justify-center"
+                  className="btn btn-gold w-full justify-center"
                 >
                   <Phone className="h-4 w-4" />
                   <span className="tnum">{BUSINESS.phone}</span>

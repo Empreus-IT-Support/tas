@@ -1,30 +1,36 @@
 import type { Metadata, Viewport } from "next";
-import { Arvo, Montserrat, Open_Sans } from "next/font/google";
+import { Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import Preloader from "@/components/Preloader";
-import { BUSINESS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import {
+  BRAND,
+  BUSINESS,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_SHORT_NAME,
+  SITE_URL,
+  TAGLINE,
+} from "@/lib/site";
 
-// Arvo, Montserrat and Open Sans were all loaded by the original TASC site —
-// Arvo's slab serif carries the heraldic weight of the crest.
-const arvo = Arvo({
+// Brand guidelines §03. Cinzel is the display face — it echoes the wordmark,
+// which is set in the same inscriptional style. SemiBold (600) is the weight
+// the guide specifies; 700 is loaded for the few places type sits small on a
+// dark ground and needs the extra body.
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-arvo",
+  weight: ["400", "600", "700"],
+  variable: "--font-cinzel",
 });
 
+// Montserrat carries body copy, UI and the tagline — one family doing all
+// three, differentiated by weight and tracking.
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["600", "700"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat",
-});
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-open-sans",
 });
 
 export const metadata: Metadata = {
@@ -35,9 +41,11 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
+  applicationName: SITE_NAME,
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
-  publisher: BUSINESS.legalName,
+  // No `publisher`: the brand guidelines give an ABN but no legal entity
+  // name, and naming the wrong company is worse than naming none.
   formatDetection: { telephone: true, address: true, email: true },
   keywords: [
     "tax agent Mount Isa",
@@ -75,18 +83,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#030202",
-  colorScheme: "light",
+  themeColor: BRAND.navy,
+  // The site is navy throughout, so the browser should render its own
+  // furniture — scrollbars, form controls, autofill — to match.
+  colorScheme: "dark",
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AccountingService",
   name: SITE_NAME,
-  alternateName: "TASC",
-  legalName: BUSINESS.legalName,
+  alternateName: [SITE_SHORT_NAME, "Tax, Accounting and Super Centre"],
+  slogan: TAGLINE,
   url: SITE_URL,
-  logo: `${SITE_URL}/images/logo.png`,
+  logo: `${SITE_URL}/brand/lockup-stacked.png`,
+  image: `${SITE_URL}/brand/lockup-stacked.png`,
   description: SITE_DESCRIPTION,
   telephone: `+61${BUSINESS.phoneHref.replace(/^\+61/, "")}`,
   email: BUSINESS.email,
@@ -153,7 +164,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-AU"
-      className={`${arvo.variable} ${montserrat.variable} ${openSans.variable}`}
+      className={`${cinzel.variable} ${montserrat.variable}`}
     >
       <body className="antialiased">
         <script
@@ -162,7 +173,7 @@ export default function RootLayout({
         />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:z-60 focus:m-2 focus:bg-white focus:px-4 focus:py-2 focus:text-ink"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-60 focus:m-2 focus:bg-gold focus:px-4 focus:py-2 focus:text-navy"
         >
           Skip to content
         </a>

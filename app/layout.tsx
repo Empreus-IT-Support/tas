@@ -137,7 +137,7 @@ const practice = {
     longitude: 139.5024,
   },
   sameAs: [
-    "https://www.localsearch.com.au/profile/tax-accounting-and-super-centre/mount-isa-qld/LyOC",
+    "https://www.localsearch.com.au/profile/tax-accounting-and-super-centre/mount-isa-qld-4825/LyOC",
   ],
   areaServed: [
     { "@type": "City", name: "Mount Isa" },

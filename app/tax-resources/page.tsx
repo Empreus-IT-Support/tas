@@ -11,11 +11,20 @@ export const metadata: Metadata = pageMeta({
   path: "/tax-resources",
 });
 
-// ATO links re-pointed 2026-08-12 against the current site. The URLs
-// inherited from the archived site were built on an information architecture
-// the ATO has since replaced (/Individuals/... -> /individuals-and-families/
-// income-deductions-offsets-and-records/...) and 7 of them 404'd. Every link
-// below was checked end-to-end; re-run the check periodically.
+// ATO links re-pointed 2026-08-12, re-checked 2026-09-21.
+//
+// The URLs inherited from the archived site were built on an information
+// architecture the ATO has since replaced, and 7 of them 404'd. The ATO has
+// reorganised again since: on 2026-09-21 nothing 404'd, but six links
+// redirected and one — "Employee or Contractor" — had had its URL recycled
+// onto an unrelated page about employer super. That is the failure mode to
+// watch for here. A status-code check passes it, because a redirect to the
+// wrong page is still a 200, so re-checks must compare the *final* URL against
+// what the link claims to be, not just the status.
+//
+// Re-run periodically, case-sensitively — several of these differ from their
+// targets only by capitalisation, and a case-insensitive comparison reports
+// them as unchanged.
 const ATO = "https://www.ato.gov.au/individuals-and-families/income-deductions-offsets-and-records";
 const DEDUCT = `${ATO}/deductions-you-can-claim`;
 
@@ -34,8 +43,8 @@ const DEDUCTIONS = [
 
 const RECORDS = [
   { label: "What records to keep", href: `${ATO}/records-you-need-to-keep` },
-  { label: "Lost or destroyed records", href: "https://www.ato.gov.au/Forms/Reasonable-estimate-for-documents-destroyed-by-disaster/" },
-  { label: "Record keeping for business", href: "https://www.ato.gov.au/Business/Record-keeping-for-business/Index---Record-keeping-for-business" },
+  { label: "Lost or destroyed records", href: "https://www.ato.gov.au/forms-and-instructions/documents-destroyed-by-natural-disaster" },
+  { label: "Record keeping for business", href: "https://www.ato.gov.au/businesses-and-organisations/preparing-lodging-and-paying/record-keeping-for-business/index-record-keeping-for-business" },
 ];
 
 const OFFSETS = [
@@ -48,10 +57,14 @@ const OFFSETS = [
 ];
 
 const CALCULATORS = [
-  { label: "Simple Tax Calculator", href: "https://www.ato.gov.au/Calculators-and-tools/Simple-tax-calculator/" },
+  { label: "Simple Tax Calculator", href: "https://www.ato.gov.au/calculators-and-tools/tax-return-simple-tax-calculator" },
   { label: "Tax Withheld Calculator", href: "https://www.ato.gov.au/Calculators-and-tools/Tax-withheld-calculator/" },
   { label: "Employee Super Guarantee", href: "https://www.ato.gov.au/Calculators-and-tools/Super-guarantee-contributions/" },
-  { label: "Employee or Contractor", href: "https://www.ato.gov.au/calculators-and-tools/employee-or-contractor/" },
+  // "Employee or Contractor" used to sit here. The ATO retired that tool and
+  // recycled its URL, which now redirects to a page about super from your
+  // employer — so the link sent people somewhere unrelated while still
+  // returning 200, which a status-code link check never catches. The current
+  // guidance page is not a calculator, so it moved to USEFUL below.
 ];
 
 const CHECKLISTS = [
@@ -69,9 +82,10 @@ const FORMS = [
 
 const USEFUL = [
   { label: "Australian Taxation Office", href: "https://www.ato.gov.au/" },
+  { label: "Employee or independent contractor", href: "https://www.ato.gov.au/businesses-and-organisations/hiring-and-paying-your-workers/employee-or-independent-contractor" },
   { label: "Fair Work Ombudsman", href: "https://www.fairwork.gov.au/" },
-  { label: "ASIC", href: "https://asic.gov.au/" },
-  { label: "business.gov.au", href: "https://www.business.gov.au/" },
+  { label: "ASIC", href: "https://www.asic.gov.au/" },
+  { label: "business.gov.au", href: "https://business.gov.au/" },
   { label: "Business Queensland", href: "https://www.business.qld.gov.au/" },
   { label: "Sage HandiSoft", href: "https://www.sage.com/en-au/" },
 ];

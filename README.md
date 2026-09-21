@@ -7,7 +7,11 @@ Two things produced what is here, and it matters which is which:
 
 - **Content** was recovered from the Wayback Machine and the still-live Duda
   CDN after the previous site went offline between late Nov 2025 and Aug 2026.
-  The archive sits beside this project at `../tascentre-archive`.
+  [!] That archive folder (`../tascentre-archive`) is **no longer on disk** —
+  checked 2026-09-21, it is not beside this project and not in Web Archives or
+  Client Docs. Git history is now the only copy of anything taken from it. If
+  a question about provenance comes up, the recovery route is this repo, not a
+  folder on someone's Desktop.
 - **Identity** comes from the client's own brand guidelines, edition 2026, a
   copy of which is committed at `docs/TASC_Mount_Isa_Brand_Guidelines.docx`.
   Section numbers quoted throughout the code refer to that file.
@@ -136,7 +140,8 @@ which is why the hero and preloader carry no texture.
 
 Everything from the previous identity — black shield, red outline, yellow-green
 lion, Arvo, Open Sans, halftone dots, notched corners — is gone. The old
-`public/images/logo.png` is kept only as archive material.
+The old `public/images/logo.png` was removed along with the inherited stock
+banners — see below.
 
 ## Forms
 
@@ -215,10 +220,15 @@ What still needs the client:
       the shopfront, because Nominatim has no entry for Turanga Shopping
       Centre. Re-check once the address is confirmed.
 - [ ] **Commission real photography.** The design is deliberately photo-free.
-      The five inherited banners in `public/images/` are dated and blue-tinted,
-      and `banner-2.jpg` is a US IRS Form 1040 sitting on an Australian tax
-      practice. They are kept only as archive material, and they clash with the
-      navy-and-gold system besides.
+      Photos of the Mount Isa office, the shopfront and the team would lift the
+      mastheads and the About page considerably.
+- [x] ~~Remove the inherited stock imagery.~~ Done 2026-09-21. The five banners,
+      the old crest `logo.png` and `pattern.jpg` were unreferenced by any
+      component after the redesign but still shipping in `public/` — about
+      380KB served to nobody, including `banner-2.jpg`, a **US IRS Form 1040**
+      publicly fetchable from an Australian tax practice at
+      `/images/banner-2.jpg`. Recover any of them with
+      `git show 731fd8a:public/images/<name>`.
 - [ ] **Re-check the client documents.** The PDFs and spreadsheets in
       `public/documents/` date to 2018–2020 and cite superseded thresholds.
 - [ ] Set `RESEND_API_KEY` in the deployment environment and verify the sending
@@ -228,9 +238,16 @@ What still needs the client:
       registrar parking page and its HTTPS is broken at the TLS handshake.
       Until the DNS changes, `robots.ts` deliberately keeps the `*.vercel.app`
       deploy out of search results.
-- [x] ~~Link-check the ATO URLs.~~ Done 2026-08-12: the ATO had replaced its
-      whole IA and 7 links 404'd. All re-pointed and verified 200 end-to-end.
-      Worth re-running periodically.
+- [x] ~~Link-check the external URLs.~~ Re-run 2026-09-21 over all 14, checking
+      the **final** URL rather than the status code. Nothing 404'd, but six had
+      started redirecting and one was actively wrong: "Employee or Contractor"
+      pointed at a URL the ATO had recycled onto a page about employer super,
+      so it returned 200 while sending people somewhere unrelated. Re-pointed,
+      and moved to the useful-links list since the replacement is guidance, not
+      a calculator. `sage.com` returns 403 to scripted requests but loads
+      normally in a browser — bot protection, not a dead link, so leave it.
+      **Re-run case-sensitively**: several of these differ from their targets
+      only by capitalisation, and a case-insensitive check reports no change.
 
 ## SEO
 

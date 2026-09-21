@@ -55,6 +55,15 @@ const MAX_PER_WINDOW = 5;
 // an attacker who can vary their apparent address, and the thing actually
 // worth protecting is the mailbox and the Resend quota — both of which are
 // consumed regardless of which IP a request claims to come from.
+//
+// KNOW THIS BEFORE RELYING ON IT: both counters live in module memory, which
+// on Vercel means *per serverless instance*, not per site. Under load the
+// platform runs more instances and the effective ceiling multiplies by however
+// many are warm; a cold start resets a counter to zero. So this bounds casual
+// abuse and accidental double-submits, and it is not a defence against a
+// determined flood. Making it one needs shared state — Vercel KV, Upstash or
+// equivalent — keyed the same way. Sized deliberately low so that even a
+// handful of instances stays within a sane mailbox volume.
 const GLOBAL_WINDOW_MS = 600_000;
 const GLOBAL_MAX_PER_WINDOW = 30;
 let globalCount = 0;
@@ -125,6 +134,10 @@ function clientIp(req: NextRequest) {
 // Reject anything larger than a legitimate enquiry before parsing it.
 const MAX_BODY_BYTES = 16 * 1024;
 
+// Well inside Vercel's default function limit, so we answer the visitor
+// ourselves rather than letting the platform time the request out.
+const SEND_TIMEOUT_MS = 8_000;
+
 /**
  * Same-origin check. The browser always sends Origin on a cross-origin POST,
  * so a mismatch means the request did not come from our own form. Requests
@@ -161,8 +174,10 @@ export async function POST(req: NextRequest) {
 
   if (rateLimited(clientIp(req)) || globallyRateLimited()) {
     return NextResponse.json(
-      { error: "Too many requests. Please try again shortly." },
-      { status: 429 }
+      { error: `Too many requests. Please try again shortly. ${FALLBACK}` },
+      // Retry-After tells well-behaved clients and crawlers when to come
+      // back, instead of leaving them to guess or hammer.
+      { status: 429, headers: { "Retry-After": "60" } }
     );
   }
 
@@ -182,7 +197,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  // Honeypot: pretend success so bots learn nothing.
+  // Honeypot, two ways. Filled in means a bot completed every field it found.
+  // *Absent entirely* means a bot posted a hand-rolled payload without ever
+  // parsing the form — our own client always sends the key, empty or not. Both
+  // get a pretend success so neither learns which signal caught it.
+  if (!("company_website" in body)) {
+    return NextResponse.json({ ok: true });
+  }
   if (typeof body.company_website === "string" && body.company_website) {
     return NextResponse.json({ ok: true });
   }
@@ -257,22 +278,56 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(apiKey);
     // Plain-text email: no HTML rendering, nothing to inject.
-    const { error } = await resend.emails.send({
+    const send = resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
       subject: `Website ${kind} from ${name}`,
       text: lines.join("\n"),
     });
-    if (error) {
-      console.error("Resend error:", error);
+
+    // Bound the wait. The SDK has no timeout of its own, so a hung upstream
+    // would otherwise hold the function open until the platform kills it and
+    // the visitor watches a spinner the whole time. This races rather than
+    // aborts — the request may still complete and the mail may still arrive,
+    // so the visitor is told we could not confirm it, not that it failed.
+    const timedOut = Symbol("timeout");
+    const result = await Promise.race([
+      send,
+      new Promise<typeof timedOut>((resolve) =>
+        setTimeout(() => resolve(timedOut), SEND_TIMEOUT_MS)
+      ),
+    ]);
+
+    if (result === timedOut) {
+      console.error("Contact form send timed out after", SEND_TIMEOUT_MS, "ms");
+      return NextResponse.json(
+        {
+          error: `We couldn't confirm your message was sent. ${FALLBACK}`,
+        },
+        { status: 504 }
+      );
+    }
+
+    if (result.error) {
+      // Log the shape of the failure, not the payload — the Resend error can
+      // echo back what was submitted, and that is the visitor's data going
+      // into a log aggregator for no operational benefit.
+      console.error(
+        "Resend rejected the message:",
+        result.error.name,
+        result.error.message
+      );
       return NextResponse.json(
         { error: `We couldn't send your message. ${FALLBACK}` },
         { status: 502 }
       );
     }
   } catch (err) {
-    console.error("Contact form send failed:", err);
+    console.error(
+      "Contact form send failed:",
+      err instanceof Error ? `${err.name}: ${err.message}` : "unknown error"
+    );
     return NextResponse.json(
       { error: `We couldn't send your message. ${FALLBACK}` },
       { status: 502 }

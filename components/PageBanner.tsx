@@ -2,7 +2,7 @@ import EmblemMark from "@/components/EmblemMark";
 import PageFrame from "@/components/PageFrame";
 import DiamondRule from "@/components/DiamondRule";
 import Link from "next/link";
-import { SITE_URL } from "@/lib/site";
+import { SITE_ID, SITE_URL } from "@/lib/site";
 
 /**
  * Masthead at the top of every inner page.
@@ -24,9 +24,13 @@ export default function PageBanner({
   /** Page path, e.g. "/about-us" — emits BreadcrumbList structured data. */
   path?: string;
 }) {
+  // `isPartOf` ties the trail back to the WebSite node in the root layout's
+  // graph, so the breadcrumbs describe this site rather than floating free.
   const breadcrumbLd = path && {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${SITE_URL}${path}#breadcrumb`,
+    isPartOf: { "@id": SITE_ID },
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
       {

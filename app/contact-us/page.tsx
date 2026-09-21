@@ -2,15 +2,15 @@ import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
 import EnquiryForm from "@/components/EnquiryForm";
 import PageBanner from "@/components/PageBanner";
-import { BUSINESS } from "@/lib/site";
+import { BUSINESS, pageMeta } from "@/lib/site";
 import { ArrowRight, Clock, Mail, Phone, Pin, Post } from "@/components/icons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Contact Us",
   description:
-    "Contact TASC Mount Isa — 26 East Street, Turanga Shopping Centre. Phone 07 4743 6342 or send an enquiry.",
-  alternates: { canonical: "/contact-us" },
-};
+    "Contact TASC Mount Isa in Mount Isa, QLD. Phone 07 4743 6342, email tasc@arnfin.net.au, or send an enquiry through the form.",
+  path: "/contact-us",
+});
 
 export default function ContactPage() {
   const { address } = BUSINESS;

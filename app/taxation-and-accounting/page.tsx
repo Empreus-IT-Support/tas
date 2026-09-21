@@ -1,15 +1,16 @@
 import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
 import { ArrowRight, Download } from "@/components/icons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Taxation & Accounting",
   description:
     "Registered tax agent and public accountant in Mount Isa: tax returns and financial statements for individuals, partnerships, companies, trusts and SMSFs, plus GST, IAS, ABN, PAYG, FTC and FBT.",
-  alternates: { canonical: "/taxation-and-accounting" },
-};
+  path: "/taxation-and-accounting",
+});
 
 const SECTIONS = [
   { id: "taxation-and-accounting", n: "01", label: "Taxation and Accounting" },

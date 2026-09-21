@@ -140,11 +140,30 @@ lion, Arvo, Open Sans, halftone dots, notched corners — is gone. The old
 
 ## Forms
 
-Both forms post to `/api/contact`. The endpoint validates, rate-limits
-(5/min/IP, in-memory), carries a honeypot field, and sends plain-text mail via
-Resend. Without `RESEND_API_KEY` it returns a 503 whose message tells the
-visitor to phone or email instead — so the site degrades gracefully rather than
-failing silently. Copy `.env.example` to `.env.local` to configure.
+Both forms post to `/api/contact` — the enquiry form on `/contact-us`, and the
+same component without the message field on `/keep-informed`. The endpoint
+validates, rate-limits (5/min/IP), carries a honeypot, and sends plain-text
+mail via Resend. Without `RESEND_API_KEY` it returns a 503 telling the visitor
+to phone or email instead, and the form keeps what they typed rather than
+clearing it. Copy `.env.example` to `.env.local` to configure.
+
+`EnquiryForm` validates on the client too, mirroring the server's rules. That
+is not belt-and-braces for its own sake: the form carries `noValidate` so the
+browser's own bubbles don't fight the design, and before this the only
+validation was server-side — so a typo in an email address cost a round trip
+and came back as one banner at the bottom of the form, naming one problem at a
+time. Now each field reports its own problem beside itself, wired up with
+`aria-invalid` and `aria-describedby`, errors clear as you correct them, and
+submitting an empty form moves focus to the first field that needs attention.
+
+Focus is managed at both ends. On success the form is replaced by the
+confirmation, which would otherwise drop focus to `<body>` and leave a keyboard
+or screen-reader user with no idea it worked; focus moves to the confirmation
+instead. A whole-form failure moves focus to the alert. Field-level problems do
+not, because focus is already on the field being corrected.
+
+The server remains the authority — it must reject things the client never
+sends. If you change a rule in one place, change it in the other.
 
 ## Before go-live
 
@@ -215,7 +234,38 @@ What still needs the client:
 
 ## SEO
 
-- Per-page `alternates.canonical`; `metadataBase` from `SITE_URL`.
+**Every page's metadata comes from `pageMeta()` in `lib/site.ts`. Use it —
+do not hand-write `title`/`description`/`alternates` on a route.** The reason
+is a trap that had already caught this project: Next inherits `openGraph` from
+the nearest ancestor that declares one, and the root layout declares a complete
+object for the home page. So a page that set only a title shipped the *home
+page's* `og:title`, `og:description` and `og:url` — meaning every inner page
+shared on Facebook, LinkedIn or WhatsApp produced a card for the home page and
+pointed back at `/`. Fixed, and verified per page in the rendered HTML.
+
+The same trap has a second half. Declaring `openGraph` on a route *replaces*
+the inherited object, and the file-convention `app/opengraph-image.tsx` goes
+with it — adding `openGraph` without `images` silently dropped `og:image` from
+every inner page while leaving the home page's intact. `pageMeta()` therefore
+sets `images` explicitly. Neither half of this shows up until a link is already
+out in the world, so check the rendered tags after touching metadata:
+
+```bash
+curl -s http://localhost:3000/about-us | grep -oE '<meta property="og:[^>]*>'
+```
+
+- **`app/not-found.tsx`** — branded 404 that returns a real 404 and, crucially,
+  clears the inherited canonical. Next's default 404 carries no metadata, so it
+  inherited the root's canonical pointing at `/`, inviting a crawler to treat
+  every dead URL as a duplicate of the home page.
+- **`sitemap.ts` uses a real `lastModified`**, not `new Date()`. Stamping build
+  time on every URL claims the whole site changed on every deploy, including
+  deploys that only bumped a dependency, and crawlers learn to discount a
+  sitemap that does that. Bump `CONTENT_LAST_MODIFIED` when page copy changes.
+- **JSON-LD is a `@graph`**, not a loose node: an `AccountingService` with a
+  stable `@id`, a `WebSite` that names it as `publisher`, and a
+  `BreadcrumbList` on every inner page that ties back via `isPartOf`. One
+  entity described once, rather than three unlinked fragments.
 - `app/opengraph-image.tsx` generates a 1200×630 PNG at build time from the
   brand palette — no remote fonts or images, so it renders identically
   anywhere. Note it fails under the Turbopack **dev** server
@@ -223,10 +273,7 @@ What still needs the client:
   via `npm run build` rather than `npm run dev`. Satori also rejects
   `radial-gradient` and most border tricks, so the guidelines' gold frame is
   drawn as four plain divs.
-- `AccountingService` JSON-LD in the layout with address, hours, geo,
-  `areaServed`, `knowsAbout`, `slogan` and `sameAs`; `BreadcrumbList` on every
-  inner page via `PageBanner`'s `path` prop.
-- `sitemap.ts`, `robots.ts`, `viewport.themeColor`, `lang="en-AU"`.
+- `robots.ts`, `viewport.themeColor`, `lang="en-AU"`.
 
 ## Hardening
 
@@ -243,15 +290,34 @@ What still needs the client:
 - `/api/contact` rejects cross-origin posts (403), non-JSON content types
   (415), bodies over 16KB (413, checked against both `content-length` and
   what actually arrived) and non-object JSON (400), on top of the honeypot.
-- **Rate limiting is two-layer, and the global layer is the one that matters.**
+- **Rate limiting is two-layer, and you should know exactly what it is worth.**
   A per-IP limit alone was worthless: `x-forwarded-for` is attacker-supplied,
   and rotating it let 8 of 8 requests through in testing. Client IP is now
   taken from `x-vercel-forwarded-for` (set at Vercel's edge, overwrites what
   the client sends), then `x-real-ip`, then the *rightmost* XFF entry. Behind
   no proxy at all — local dev — per-IP remains spoofable, which is inherent.
-  So there is also a hard ceiling of 30 sends per 10 minutes across all
-  callers, which bounds mailbox flooding and Resend quota burn regardless of
-  claimed address. Verified: 30 through, then 429.
+  There is also a ceiling of 30 sends per 10 minutes across all callers.
+- [!] **Both counters live in module memory, which on Vercel means per
+  serverless instance, not per site.** Under load the platform runs more
+  instances and the effective ceiling multiplies by however many are warm; a
+  cold start resets one to zero. So this bounds casual abuse and accidental
+  double-submits, and it is **not** a defence against a determined flood.
+  Making it one needs shared state — Vercel KV, Upstash or equivalent — keyed
+  the same way. The limits are sized low deliberately so that even several
+  instances stay within a sane mailbox volume. 429s carry `Retry-After: 60`.
+- **The honeypot catches two shapes of bot.** Filled in means it completed
+  every field it found. *Absent entirely* means it posted a hand-rolled
+  payload without ever parsing the form — the real client always sends the
+  key, empty or not. Both get a pretend success, so neither learns which
+  signal caught it.
+- **The Resend call is time-boxed at 8s.** The SDK carries no timeout of its
+  own, so a hung upstream would hold the function open until the platform
+  killed it while the visitor watched a spinner. It races rather than aborts,
+  so the request may still complete and the mail may still arrive — hence the
+  504 says we could not *confirm* it was sent, not that it failed.
+- **Failures log their shape, not their payload.** A Resend error can echo
+  back what was submitted, and that is the visitor's name, phone and message
+  going into a log aggregator for no operational benefit.
 - The IP bucket map prunes expired entries and hard-clears past 5,000 keys —
   previously it grew without bound, one entry per distinct address, forever.
 - Control characters are stripped from `name`, `email` and `phone` before they

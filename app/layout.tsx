@@ -8,7 +8,9 @@ import Preloader from "@/components/Preloader";
 import {
   BRAND,
   BUSINESS,
+  PRACTICE_ID,
   SITE_DESCRIPTION,
+  SITE_ID,
   SITE_NAME,
   SITE_SHORT_NAME,
   SITE_URL,
@@ -89,9 +91,15 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
+/**
+ * A `@graph` rather than a bare node, so the practice, the website and the
+ * breadcrumbs on every inner page all describe one entity instead of three
+ * unrelated ones. `PRACTICE_ID` and `SITE_ID` are exported through lib/site
+ * and referenced from PageBanner's BreadcrumbList.
+ */
+const practice = {
   "@type": "AccountingService",
+  "@id": PRACTICE_ID,
   name: SITE_NAME,
   alternateName: [SITE_SHORT_NAME, "Tax, Accounting and Super Centre"],
   slogan: TAGLINE,
@@ -156,6 +164,20 @@ const jsonLd = {
       itemOffered: { "@type": "Service", name },
     })),
   },
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": SITE_ID,
+  url: SITE_URL,
+  name: SITE_NAME,
+  inLanguage: "en-AU",
+  publisher: { "@id": PRACTICE_ID },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [practice, website],
 };
 
 export default function RootLayout({

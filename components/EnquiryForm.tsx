@@ -1,9 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "./icons";
 
 type Status = "idle" | "sending" | "sent" | "error";
+type FieldName = "name" | "phone" | "email" | "message";
+type FieldErrors = Partial<Record<FieldName, string>>;
+
+/**
+ * Validation mirrors app/api/contact/route.ts deliberately.
+ *
+ * The server is the authority — these rules exist so a visitor is told what is
+ * wrong beside the field that is wrong, instead of learning it one problem at
+ * a time from a round trip. If you change a rule here, change it there too;
+ * the reverse is not true, because the server must reject things the client
+ * never sends.
+ */
+const EMAIL_RE = /^[^\s@<>,"';]+@[^\s@<>,"';]+\.[^\s@<>,"';]+$/;
+const PHONE_RE = /^[0-9+()\-\s]{6,20}$/;
+
+const LIMITS: Record<FieldName, number> = {
+  name: 80,
+  email: 120,
+  phone: 20,
+  message: 2000,
+};
+
+const LABELS: Record<FieldName, string> = {
+  name: "Your name",
+  phone: "Your number",
+  email: "Your email address",
+  message: "Your message",
+};
+
+function validate(values: Record<FieldName, string>, withMessage: boolean) {
+  const errors: FieldErrors = {};
+  const fields: FieldName[] = withMessage
+    ? ["name", "phone", "email", "message"]
+    : ["name", "phone", "email"];
+
+  for (const f of fields) {
+    const v = values[f].trim();
+    if (!v) {
+      errors[f] = `${LABELS[f]} is required.`;
+    } else if (v.length > LIMITS[f]) {
+      errors[f] = `${LABELS[f]} is too long (maximum ${LIMITS[f]} characters).`;
+    }
+  }
+
+  if (!errors.email && values.email.trim() && !EMAIL_RE.test(values.email.trim())) {
+    errors.email = "Please enter a valid email address.";
+  }
+  if (!errors.phone && values.phone.trim() && !PHONE_RE.test(values.phone.trim())) {
+    errors.phone = "Please enter a valid phone number — digits, spaces and + ( ) - only.";
+  }
+
+  return errors;
+}
 
 export default function EnquiryForm({
   withMessage = true,
@@ -14,18 +67,72 @@ export default function EnquiryForm({
 }) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const formRef = useRef<HTMLFormElement>(null);
+  const sentRef = useRef<HTMLParagraphElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
+
+  // The form is replaced by the confirmation, so without this the focus ring
+  // lands on <body> and a keyboard or screen-reader user is left with no idea
+  // the submission worked. `role="status"` announces it; this puts them there.
+  useEffect(() => {
+    if (status === "sent") sentRef.current?.focus();
+    if (status === "error" && !Object.keys(fieldErrors).length) {
+      errorRef.current?.focus();
+    }
+  }, [status, fieldErrors]);
+
+  /** Re-validate a field once it has already been marked invalid. */
+  function revalidate(name: FieldName) {
+    if (!fieldErrors[name]) return;
+    const form = formRef.current;
+    if (!form) return;
+    const data = new FormData(form);
+    const values = {
+      name: String(data.get("name") ?? ""),
+      phone: String(data.get("phone") ?? ""),
+      email: String(data.get("email") ?? ""),
+      message: String(data.get("message") ?? ""),
+    };
+    const next = validate(values, withMessage);
+    setFieldErrors((prev) => ({ ...prev, [name]: next[name] }));
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const payload: Record<string, string> = {
+
+    const values: Record<FieldName, string> = {
       name: String(data.get("name") ?? ""),
-      email: String(data.get("email") ?? ""),
       phone: String(data.get("phone") ?? ""),
+      email: String(data.get("email") ?? ""),
+      message: String(data.get("message") ?? ""),
+    };
+
+    const errors = validate(values, withMessage);
+    if (Object.keys(errors).length) {
+      setFieldErrors(errors);
+      setStatus("error");
+      setError("");
+      // Send focus to the first problem in DOM order, not in object order.
+      const order: FieldName[] = ["name", "phone", "email", "message"];
+      const first = order.find((f) => errors[f]);
+      if (first) form.querySelector<HTMLElement>(`#${first}`)?.focus();
+      return;
+    }
+
+    setFieldErrors({});
+
+    const payload: Record<string, string> = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      // Always sent, even empty: the endpoint treats a *missing* honeypot key
+      // as a bot that never parsed the form.
       company_website: String(data.get("company_website") ?? ""),
     };
-    if (withMessage) payload.message = String(data.get("message") ?? "");
+    if (withMessage) payload.message = values.message;
 
     setStatus("sending");
     setError("");
@@ -53,14 +160,18 @@ export default function EnquiryForm({
   // with a gold hairline, going gold on focus. `color-scheme: dark` is what
   // makes the browser render the caret, selection and autofill for a dark
   // field — without it Chrome paints an autofilled input near-white.
-  const field =
-    "w-full border border-line bg-navy-2 px-4 py-3.5 text-white outline-none [color-scheme:dark] placeholder:text-muted hover:border-rule focus:border-gold";
-  const label =
+  const fieldClass = (invalid: boolean) =>
+    `w-full border bg-navy-2 px-4 py-3.5 text-white outline-none [color-scheme:dark] placeholder:text-muted focus:border-gold ${
+      invalid ? "border-champagne" : "border-line hover:border-rule"
+    }`;
+  const labelClass =
     "mb-2 block font-ui text-[11px] font-semibold tracking-[0.18em] text-gold uppercase";
 
   if (status === "sent") {
     return (
       <p
+        ref={sentRef}
+        tabIndex={-1}
         role="status"
         className="gilt bg-gold/10 p-7 text-white"
       >
@@ -69,8 +180,32 @@ export default function EnquiryForm({
     );
   }
 
+  /** Label, control and its error message, wired together for assistive tech. */
+  const fieldProps = (name: FieldName) => ({
+    id: name,
+    name,
+    maxLength: LIMITS[name],
+    "aria-invalid": fieldErrors[name] ? (true as const) : undefined,
+    "aria-describedby": fieldErrors[name] ? `${name}-error` : undefined,
+    onBlur: () => revalidate(name),
+    onChange: () => revalidate(name),
+    className: fieldClass(Boolean(fieldErrors[name])),
+  });
+
+  function FieldError({ name }: { name: FieldName }) {
+    if (!fieldErrors[name]) return null;
+    return (
+      <p id={`${name}-error`} className="mt-2 text-sm text-champagne">
+        {fieldErrors[name]}
+      </p>
+    );
+  }
+
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-5">
+    // `noValidate` turns off the browser's own bubbles so the messages above
+    // can be styled, announced and positioned beside their field. It is only
+    // defensible because this component validates properly itself.
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="space-y-5">
       {/* Honeypot — hidden from people, tempting to bots */}
       <div aria-hidden="true" className="absolute -left-[9999px]">
         <label htmlFor="company_website">Company website</label>
@@ -83,70 +218,59 @@ export default function EnquiryForm({
         />
       </div>
 
+      <p className="text-sm text-muted">All fields are required.</p>
+
       <div>
-        <label htmlFor="name" className={label}>
-          Your name
+        <label htmlFor="name" className={labelClass}>
+          {LABELS.name}
         </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-          maxLength={80}
-          autoComplete="name"
-          className={field}
-        />
+        <input type="text" autoComplete="name" {...fieldProps("name")} />
+        <FieldError name="name" />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="phone" className={label}>
-            Your number
+          <label htmlFor="phone" className={labelClass}>
+            {LABELS.phone}
           </label>
           <input
-            id="phone"
-            name="phone"
             type="tel"
-            required
-            maxLength={20}
+            inputMode="tel"
             autoComplete="tel"
-            className={field}
+            {...fieldProps("phone")}
           />
+          <FieldError name="phone" />
         </div>
         <div>
-          <label htmlFor="email" className={label}>
-            Your email address
+          <label htmlFor="email" className={labelClass}>
+            {LABELS.email}
           </label>
           <input
-            id="email"
-            name="email"
             type="email"
-            required
-            maxLength={120}
+            inputMode="email"
             autoComplete="email"
-            className={field}
+            {...fieldProps("email")}
           />
+          <FieldError name="email" />
         </div>
       </div>
 
       {withMessage && (
         <div>
-          <label htmlFor="message" className={label}>
-            Your message
+          <label htmlFor="message" className={labelClass}>
+            {LABELS.message}
           </label>
-          <textarea
-            id="message"
-            name="message"
-            required
-            rows={6}
-            maxLength={2000}
-            className={field}
-          />
+          <textarea rows={6} {...fieldProps("message")} />
+          <FieldError name="message" />
         </div>
       )}
 
-      {status === "error" && (
+      {/* Whole-form failures only — a field-level problem is reported beside
+          the field, and repeating it here would announce everything twice. */}
+      {status === "error" && error && (
         <p
+          ref={errorRef}
+          tabIndex={-1}
           role="alert"
           className="border-l-2 border-champagne bg-champagne/10 px-4 py-3 text-sm font-semibold text-champagne"
         >
@@ -162,6 +286,12 @@ export default function EnquiryForm({
         {status === "sending" ? "Sending…" : submitLabel}
         {status !== "sending" && <ArrowRight />}
       </button>
+
+      {/* Announced without stealing focus, so the disabled button is not a
+          silent dead end for a screen-reader user. */}
+      <span aria-live="polite" className="sr-only">
+        {status === "sending" ? "Sending your message." : ""}
+      </span>
     </form>
   );
 }

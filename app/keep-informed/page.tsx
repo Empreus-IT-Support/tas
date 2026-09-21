@@ -1,14 +1,15 @@
 import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import EnquiryForm from "@/components/EnquiryForm";
 import PageBanner from "@/components/PageBanner";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Keep Informed",
   description:
     "Sign up for tax tips, tax-related information and promotions from TASC Mount Isa.",
-  alternates: { canonical: "/keep-informed" },
-};
+  path: "/keep-informed",
+});
 
 const PROMISES = [
   {

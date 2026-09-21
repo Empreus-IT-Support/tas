@@ -1,17 +1,18 @@
 import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
 import PageFrame from "@/components/PageFrame";
 import EmblemMark from "@/components/EmblemMark";
 import { ArrowRight } from "@/components/icons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "About Us",
   description:
     "TASC Mount Isa began as Steve Williams and Co. Read our story, our mission and vision, and meet our management.",
-  alternates: { canonical: "/about-us" },
-};
+  path: "/about-us",
+});
 
 export default function AboutPage() {
   return (

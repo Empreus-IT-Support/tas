@@ -1,14 +1,15 @@
 import DiamondRule from "@/components/DiamondRule";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/site";
 import PageBanner from "@/components/PageBanner";
 import { Download, ExternalLink } from "@/components/icons";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Tax Resources",
   description:
     "Fact sheets, ATO calculators, checklists and downloadable forms from TASC Mount Isa.",
-  alternates: { canonical: "/tax-resources" },
-};
+  path: "/tax-resources",
+});
 
 // ATO links re-pointed 2026-08-12 against the current site. The URLs
 // inherited from the archived site were built on an information architecture

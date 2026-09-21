@@ -24,6 +24,17 @@ export const SITE_URL =
 export const IS_CANONICAL_HOST = !/\.vercel\.app$/.test(SITE_URL);
 
 /**
+ * Stable identifiers for the structured-data graph.
+ *
+ * Fragment URIs, not page URLs: the entity is the practice, which is not the
+ * same thing as the home page. Every node that refers to the practice or the
+ * site uses these, so the layout's graph and each inner page's BreadcrumbList
+ * describe one entity rather than several unlinked ones.
+ */
+export const PRACTICE_ID = `${SITE_URL}/#practice`;
+export const SITE_ID = `${SITE_URL}/#website`;
+
+/**
  * Practice name and tagline are fixed by the brand guidelines
  * (docs/TASC_Mount_Isa_Brand_Guidelines.docx, §05 Practice details and
  * §04 Voice). The tagline is never abbreviated to "TAS".
@@ -140,3 +151,62 @@ export const BRAND = {
   bronze: "#9B501D",
   platinum: "#EDEDED",
 } as const;
+
+/**
+ * Per-page metadata.
+ *
+ * Every inner page must call this rather than writing `title` /`description` /
+ * `alternates` by hand. Next inherits `openGraph` from the nearest ancestor
+ * that declares one, and the root layout declares a complete object for the
+ * home page — so a page that sets only a title silently ships the *home
+ * page's* og:title, og:description and, worst of all, `og:url` pointing at
+ * `/`. Sharing any inner page then produced a card for the home page. This
+ * helper exists so that cannot happen again.
+ *
+ * `images` MUST be set explicitly. `app/opengraph-image.tsx` is a file
+ * convention that applies to routes which declare no `openGraph` of their
+ * own — the moment a route declares one, it *replaces* the inherited object
+ * and the image goes with it. Verified: adding `openGraph` here without
+ * `images` dropped `og:image` from every inner page while leaving the home
+ * page's intact, which is the kind of regression nothing surfaces until a
+ * link is already shared.
+ */
+const OG_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: `${SITE_NAME} — ${TAGLINE}, Mount Isa`,
+} as const;
+
+export function pageMeta({
+  title,
+  description,
+  path,
+}: {
+  title: string;
+  description: string;
+  /** Route path with a leading slash, e.g. "/about-us". */
+  path: string;
+}) {
+  const fullTitle = `${title} | ${SITE_NAME}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website" as const,
+      locale: "en_AU",
+      url: path,
+      siteName: SITE_NAME,
+      title: fullTitle,
+      description,
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: fullTitle,
+      description,
+      images: [OG_IMAGE.url],
+    },
+  };
+}

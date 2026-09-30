@@ -22,7 +22,7 @@ client-approved, the archive is neither.
 ## Stack
 
 Next.js 16 (App Router, Turbopack) · React 19 · Tailwind CSS v4 · TypeScript ·
-Resend for form delivery.
+Atlas for form delivery.
 
 ```bash
 npm install
@@ -148,7 +148,7 @@ banners — see below.
 Both forms post to `/api/contact` — the enquiry form on `/contact-us`, and the
 same component without the message field on `/keep-informed`. The endpoint
 validates, rate-limits (5/min/IP), carries a honeypot, and sends plain-text
-mail via Resend. Without `RESEND_API_KEY` it returns a 503 telling the visitor
+mail via Atlas. Without `ATLAS_API_KEY` it returns a 503 telling the visitor
 to phone or email instead, and the form keeps what they typed rather than
 clearing it. Copy `.env.example` to `.env.local` to configure.
 
@@ -231,8 +231,8 @@ What still needs the client:
       `git show 731fd8a:public/images/<name>`.
 - [ ] **Re-check the client documents.** The PDFs and spreadsheets in
       `public/documents/` date to 2018–2020 and cite superseded thresholds.
-- [ ] Set `RESEND_API_KEY` in the deployment environment and verify the sending
-      domain in Resend. Note the practice email is `@arnfin.net.au`, so the
+- [ ] Set `ATLAS_API_KEY` in the deployment environment and verify the sending
+      domain in Atlas. Note the practice email is `@arnfin.net.au`, so the
       domain to verify may not be `tascentre.com.au`.
 - [ ] **Point the domain at Vercel.** `tascentre.com.au` resolves to a
       registrar parking page and its HTTPS is broken at the TLS handshake.
@@ -327,12 +327,12 @@ curl -s http://localhost:3000/about-us | grep -oE '<meta property="og:[^>]*>'
   payload without ever parsing the form — the real client always sends the
   key, empty or not. Both get a pretend success, so neither learns which
   signal caught it.
-- **The Resend call is time-boxed at 8s.** The SDK carries no timeout of its
-  own, so a hung upstream would hold the function open until the platform
-  killed it while the visitor watched a spinner. It races rather than aborts,
+- **The Atlas call is time-boxed at 8s.** The shared helper in `lib/atlas.ts`
+  aborts at 15s, which is long enough that a hung upstream would hold the
+  function open while the visitor watched a spinner. It races rather than aborts,
   so the request may still complete and the mail may still arrive — hence the
   504 says we could not *confirm* it was sent, not that it failed.
-- **Failures log their shape, not their payload.** A Resend error can echo
+- **Failures log their shape, not their payload.** An upstream error can echo
   back what was submitted, and that is the visitor's name, phone and message
   going into a log aggregator for no operational benefit.
 - The IP bucket map prunes expired entries and hard-clears past 5,000 keys —

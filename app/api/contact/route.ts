@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { atlasConfigured, sendAtlasEmail } from "@/lib/atlas";
 import { BUSINESS } from "@/lib/site";
 
 export const runtime = "nodejs";
 
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? BUSINESS.email;
-// Resend requires a verified sender domain; onboarding@resend.dev works out of
-// the box until tascentre.com.au is verified in Resend.
-const FROM_EMAIL =
-  process.env.CONTACT_FROM_EMAIL ?? "TASC Website <onboarding@resend.dev>";
+// Must be a bare address Atlas authorises for this key — see lib/atlas.ts.
+const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL ?? "DoNotReply@tascentre.com.au";
 
 const FIELD_LIMITS: Record<string, number> = {
   name: 80,
@@ -53,7 +51,7 @@ const MAX_PER_WINDOW = 5;
 
 // A global ceiling as well as a per-IP one. Per-IP alone is worthless against
 // an attacker who can vary their apparent address, and the thing actually
-// worth protecting is the mailbox and the Resend quota — both of which are
+// worth protecting is the mailbox and the Atlas quota — both of which are
 // consumed regardless of which IP a request claims to come from.
 //
 // KNOW THIS BEFORE RELYING ON IT: both counters live in module memory, which
@@ -258,8 +256,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
+  if (!atlasConfigured()) {
     return NextResponse.json(
       { error: `Our enquiry form isn't available right now. ${FALLBACK}` },
       { status: 503 }
@@ -276,9 +273,8 @@ export async function POST(req: NextRequest) {
   lines.push("", `— Sent from the website ${kind} form`);
 
   try {
-    const resend = new Resend(apiKey);
     // Plain-text email: no HTML rendering, nothing to inject.
-    const send = resend.emails.send({
+    const send = sendAtlasEmail({
       from: FROM_EMAIL,
       to: TO_EMAIL,
       replyTo: email,
@@ -286,11 +282,10 @@ export async function POST(req: NextRequest) {
       text: lines.join("\n"),
     });
 
-    // Bound the wait. The SDK has no timeout of its own, so a hung upstream
-    // would otherwise hold the function open until the platform kills it and
-    // the visitor watches a spinner the whole time. This races rather than
-    // aborts — the request may still complete and the mail may still arrive,
-    // so the visitor is told we could not confirm it, not that it failed.
+    // Bound the wait more tightly than the helper's own 15s abort, so the
+    // visitor isn't left watching a spinner. This races rather than aborts —
+    // the request may still complete and the mail may still arrive, so the
+    // visitor is told we could not confirm it, not that it failed.
     const timedOut = Symbol("timeout");
     const result = await Promise.race([
       send,
@@ -309,15 +304,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (result.error) {
-      // Log the shape of the failure, not the payload — the Resend error can
+    if (!result.ok) {
+      // Log the shape of the failure, not the payload — the upstream error can
       // echo back what was submitted, and that is the visitor's data going
       // into a log aggregator for no operational benefit.
-      console.error(
-        "Resend rejected the message:",
-        result.error.name,
-        result.error.message
-      );
+      console.error("Atlas rejected the message:", result.status, result.detail);
       return NextResponse.json(
         { error: `We couldn't send your message. ${FALLBACK}` },
         { status: 502 }

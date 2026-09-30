@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import Preloader from "@/components/Preloader";
+import { Analytics } from "@vercel/analytics/react";
 import {
   BRAND,
   BUSINESS,
@@ -204,6 +205,7 @@ export default function RootLayout({
         <main id="main">{children}</main>
         <Footer />
         <ScrollReveal />
+        <Analytics />
       </body>
     </html>
   );

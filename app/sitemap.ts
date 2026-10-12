@@ -16,10 +16,23 @@ const CONTENT_LAST_MODIFIED = "2026-09-21";
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date(CONTENT_LAST_MODIFIED);
 
-  return NAV.map((item) => ({
+  const pages = NAV.map((item) => ({
     url: `${SITE_URL}${item.href === "/" ? "" : item.href}`,
     lastModified,
-    changeFrequency: item.href === "/" ? "monthly" : "yearly",
+    changeFrequency: (item.href === "/" ? "monthly" : "yearly") as
+      | "monthly"
+      | "yearly",
     priority: item.href === "/" ? 1 : 0.7,
   }));
+
+  // Not in NAV, deliberately: the privacy policy is footer-only. It is still
+  // a real indexable page, so it belongs in the sitemap.
+  pages.push({
+    url: `${SITE_URL}/privacy-policy`,
+    lastModified,
+    changeFrequency: "yearly",
+    priority: 0.3,
+  });
+
+  return pages;
 }

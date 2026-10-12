@@ -14,8 +14,13 @@ export default function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  // Once the page moves, the utility strip collapses away. The main bar keeps
-  // a fixed height so the logo never resizes underneath the pointer.
+  // Tracks scroll for the drop shadow only. It must never drive anything that
+  // changes the header's height: the header is sticky, so it occupies flow,
+  // and shrinking it pulls the whole page up underneath the reader. The
+  // utility strip used to collapse from 36px to 0 past a 16px threshold,
+  // which shifted every page by 36px the instant you started scrolling, put
+  // the trigger point close enough to the top that scrolling back could
+  // re-expand it, and animated the change over 300ms so the jump was visible.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
@@ -42,12 +47,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* --- Utility strip: collapses on scroll ---------------------------- */}
-      <div
-        className={`hidden overflow-hidden bg-midnight transition-[height] duration-300 lg:block ${
-          scrolled ? "h-0" : "h-9"
-        }`}
-      >
+      {/* --- Utility strip: fixed height, never collapses ------------------ */}
+      <div className="hidden h-9 overflow-hidden bg-midnight lg:block">
         <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-6 px-5">
           {/* The tagline as a standalone descriptor, per the brand
               guidelines §04. Never abbreviated. */}

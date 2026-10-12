@@ -52,7 +52,7 @@ function validate(values: Record<FieldName, string>, withMessage: boolean) {
     errors.email = "Please enter a valid email address.";
   }
   if (!errors.phone && values.phone.trim() && !PHONE_RE.test(values.phone.trim())) {
-    errors.phone = "Please enter a valid phone number — digits, spaces and + ( ) - only.";
+    errors.phone = "Please enter a valid phone number, using digits, spaces and + ( ) - only.";
   }
 
   return errors;

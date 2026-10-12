@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { BRAND, BUSINESS, SITE_NAME, TAGLINE } from "@/lib/site";
 
 export const runtime = "nodejs";
-export const alt = `${SITE_NAME} — ${TAGLINE}, Mount Isa`;
+export const alt = `${SITE_NAME}. ${TAGLINE}, Mount Isa`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

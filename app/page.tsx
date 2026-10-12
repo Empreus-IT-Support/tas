@@ -11,7 +11,7 @@ const SERVICES = [
     n: "01",
     title: "Taxation and Accounting",
     detail:
-      "Returns and financial statements for individuals, partnerships, companies, trusts, deceased estates and SMSFs — all lodged electronically, all quality-checked first.",
+      "Returns and financial statements for individuals, partnerships, companies, trusts, deceased estates and SMSFs. All lodged electronically, all quality-checked first.",
     href: "/taxation-and-accounting#taxation-and-accounting",
   },
   {
@@ -33,13 +33,15 @@ const SERVICES = [
 const CREDENTIALS = [
   { value: "Public", label: "Accountant and registered tax agent" },
   { value: "Electronic", label: "Lodgement, for faster refunds" },
-  { value: "Quality-checked", label: "Before anything is lodged" },
+  // One word, like the two above it: "Quality-checked" wrapped onto a second
+  // line at every width, leaving the row of three visibly uneven.
+  { value: "Checked", label: "For quality before anything is lodged" },
 ];
 
 const FACTS = [
   { value: "Mount Isa", label: "North West Queensland" },
   { value: "Australia-wide", label: "Out-of-area lodgement" },
-  { value: "Jul – Sep", label: "Extended office hours" },
+  { value: "July to September", label: "Extended office hours" },
 ];
 
 const REASONS = [
@@ -49,7 +51,7 @@ const REASONS = [
   },
   {
     title: "Open to anyone",
-    body: "The out-of-area lodgement service means distance is not a barrier — send your paperwork in from anywhere in Australia.",
+    body: "The out-of-area lodgement service means distance is not a barrier. Send your paperwork in from anywhere in Australia.",
   },
   {
     title: "Checked before lodged",
@@ -122,7 +124,7 @@ export default function HomePage() {
 
           <p className="mx-auto mt-9 max-w-xl text-balance">
             Qualified staff, precise and up-to-date advice, and a friendly
-            service that keeps the effort on our side of the desk — not yours.
+            service that keeps the effort on our side of the desk, not yours.
           </p>
 
           <div className="mt-10 flex flex-wrap justify-center gap-3">
@@ -172,7 +174,7 @@ export default function HomePage() {
                   sentence-length quote set in them stops being readable. */}
               <figure className="panel mt-10 p-8">
                 <blockquote className="text-lg leading-relaxed text-white">
-                  &ldquo;At TASC we do not see our clients as numbers — we see
+                  &ldquo;At TASC we do not see our clients as numbers. We see
                   people with a dream and a vision to be financially
                   secure.&rdquo;
                 </blockquote>

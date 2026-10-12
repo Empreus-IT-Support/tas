@@ -39,7 +39,7 @@ export default function AboutPage() {
                 The practice began in Mount Isa as Steve Williams and Co., which
                 then became known as the Tax, Accounting and Super Centre. That
                 shortens to TASC, a play on the word &lsquo;task&rsquo;, and it
-                is how the town has known us ever since — today as TASC Mount
+                is how the town has known us ever since, today as TASC Mount
                 Isa. We enjoy and respect what we do and keep it fun, friendly
                 and real.
               </p>
@@ -51,7 +51,7 @@ export default function AboutPage() {
                 prioritising our clients&rsquo; needs.
               </p>
               <p>
-                At TASC we do not see our clients as numbers — we see people
+                At TASC we do not see our clients as numbers. We see people
                 with a dream and a vision to be financially secure, and our
                 focus is to help our clients achieve their dreams.
               </p>

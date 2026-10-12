@@ -113,7 +113,7 @@ export default function Footer() {
       <div className="relative border-t border-white/10">
         <div className="mx-auto max-w-7xl px-5 py-8 text-[13px] leading-relaxed">
           <p className="font-ui text-[11px] font-semibold tracking-[0.16em] text-white/80 uppercase">
-            {SITE_NAME} — {TAGLINE}
+            {SITE_NAME}. {TAGLINE}
           </p>
           <p className="mt-2">
             <span className="tnum">ABN {BUSINESS.abn}</span>

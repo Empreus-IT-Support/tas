@@ -35,7 +35,7 @@ export default function NotFound() {
         </h1>
         <DiamondRule className="mx-auto mt-8 w-40" width="full" />
         <p className="mt-8">
-          The page you were looking for isn&rsquo;t here — it may have moved, or
+          The page you were looking for isn&rsquo;t here. It may have moved, or
           the link may be out of date. Try one of these instead, or give us a
           call and we&rsquo;ll point you to the right place.
         </p>

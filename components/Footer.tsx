@@ -148,7 +148,7 @@ export default function Footer() {
 
           <p className="mt-6 flex items-center gap-2.5 border-t border-white/10 pt-6 font-ui text-[10px] font-semibold tracking-[0.22em] text-platinum/50 uppercase">
             <span aria-hidden="true" className="h-px w-6 bg-gold/60" />
-            Managed by Empreus IT Support
+            Managed by <a href="https://www.empreus.com.au" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-gold">Empreus IT Support</a>
           </p>
         </div>
       </div>
